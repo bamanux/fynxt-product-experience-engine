@@ -1,0 +1,17 @@
+{
+  "description": "FDS-101 component sets ↔ @fynxt/ui components (Code Connect files live beside each component in the Station). DRAFT.",
+  "figmaFileKey": "3c44QQCA8h7GTZYH2EWn8H",
+  "updated": "2026-10-12",
+  "mappings": [
+    { "figmaNode": "62:745", "figmaName": "Button", "code": "@fynxt/ui › Button", "codeConnect": "packages/ui/src/Button/Button.figma.tsx" },
+    { "figmaNode": "64:39", "figmaName": "Badge", "code": "@fynxt/ui › Badge", "codeConnect": "packages/ui/src/Badge/Badge.figma.tsx" },
+    { "figmaNode": "74:46", "figmaName": "Card", "code": "@fynxt/ui › Card", "codeConnect": "packages/ui/src/Card/Card.figma.tsx" },
+    { "figmaNode": "46:621", "figmaName": "Input", "code": "@fynxt/ui › TextField", "codeConnect": "packages/ui/src/Field/Field.figma.tsx" },
+    { "figmaNode": "51:73", "figmaName": "Textarea", "code": "@fynxt/ui › TextArea", "codeConnect": "packages/ui/src/Field/Field.figma.tsx" },
+    { "figmaNode": "50:81", "figmaName": "Select", "code": "@fynxt/ui › Select", "codeConnect": "packages/ui/src/Field/Field.figma.tsx" },
+    { "figmaNode": "75:18", "figmaName": "Primary Tab", "code": "@fynxt/ui › Tabs (variant=primary)", "codeConnect": "packages/ui/src/Tabs/Tabs.figma.tsx" },
+    { "figmaNode": "318:5979", "figmaName": "Secondary Tab", "code": "@fynxt/ui › Tabs (variant=secondary)", "codeConnect": "packages/ui/src/Tabs/Tabs.figma.tsx" },
+    { "figmaNode": "65:45", "figmaName": "Alert", "code": "@fynxt/ui › Alert", "codeConnect": "packages/ui/src/Alert/Alert.figma.tsx" }
+  ],
+  "note": "Code Connect mappings are written but not yet published to Figma (`npx figma connect publish` needs a Figma access token)."
+}

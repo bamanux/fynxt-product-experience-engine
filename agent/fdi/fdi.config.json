@@ -1,0 +1,125 @@
+{
+  "configVersion": "0.1.0",
+  "description": "FDI (FYNXT Design Inspector) configuration. Values set to null are unknown and must be supplied by a human; FDI stops at the stage that needs them rather than guessing.",
+  "caseFiles": {
+    "root": "design-cases",
+    "idPrefix": "DCF-",
+    "idDigits": 4
+  },
+  "station": {
+    "repoUrl": null,
+    "localPath": "../fynxt-design-code-station",
+    "defaultBranch": "main",
+    "branchPrefix": "fdi/",
+    "packages": {
+      "tokens": "@fynxt/tokens",
+      "ui": "@fynxt/ui",
+      "templates": "@fynxt/templates"
+    },
+    "gallery": {
+      "app": "apps/studio",
+      "menuConfig": "apps/studio/gallery/menu.json",
+      "pagesDir": "apps/studio/gallery/pages"
+    },
+    "commands": {
+      "install": "npm install",
+      "typecheck": "npm run typecheck",
+      "test": "npm test",
+      "lint": "npm run lint",
+      "tokens": "npm run tokens:build"
+    }
+  },
+  "existingComponentLibrary": {
+    "location": null,
+    "note": "The user stated a component library already exists. Its location (repo/package) is not yet recorded. Until it is, FDI searches Station packages/ui and FDS-101 only and lists this as an open question."
+  },
+  "figma": {
+    "designSystemFileKey": "3c44QQCA8h7GTZYH2EWn8H",
+    "designSystemName": "FDS-101",
+    "workFileKey": "0CwREH91xlsQOFpAUp852B",
+    "workFileName": "FDI - Test",
+    "requiredStateFrames": [
+      "default",
+      "loading",
+      "empty",
+      "error"
+    ]
+  },
+  "approvers": {
+    "caseFile": [
+      "Product Designer"
+    ],
+    "design": [
+      "Product Designer"
+    ],
+    "code": [
+      "UI Code Reviewer"
+    ],
+    "names": {}
+  },
+  "studio": {
+    "status": "PROPOSED \u2014 role permissions need Governance approval (DL-0002)",
+    "roles": [
+      "Product Designer",
+      "UI Code Reviewer",
+      "Product Manager",
+      "Project Manager",
+      "Business Analyst",
+      "Developer",
+      "QA / Tester",
+      "Stakeholder"
+    ],
+    "permissions": {
+      "submitRequest": "*",
+      "comment": "*",
+      "decide": {
+        "IN-REVIEW": "caseFile",
+        "DESIGN-REVIEW": "design",
+        "CODE-REVIEW": "code"
+      },
+      "runStage": {
+        "revise": [
+          "Product Designer"
+        ],
+        "figma": [
+          "Product Designer"
+        ],
+        "build": [
+          "Product Designer",
+          "UI Code Reviewer"
+        ],
+        "publish": [
+          "UI Code Reviewer"
+        ]
+      }
+    },
+    "headlessRuns": {
+      "figma": "disabled \u2014 the Figma write connector needs interactive OAuth; run /fdi-figma in Claude Code",
+      "bashAllowlist": [
+        "npm run",
+        "npm test",
+        "npm ci",
+        "node ",
+        "npx tsc",
+        "npx vitest",
+        "git status",
+        "git diff",
+        "git log",
+        "git checkout",
+        "git switch",
+        "git branch",
+        "git add",
+        "git commit",
+        "git rev-parse",
+        "ls",
+        "cat",
+        "grep",
+        "find",
+        "mkdir",
+        "head",
+        "tail",
+        "wc"
+      ]
+    }
+  }
+}

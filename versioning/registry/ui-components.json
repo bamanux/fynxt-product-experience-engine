@@ -1,0 +1,12 @@
+{
+  "artifact": "@fynxt/ui (Design Code Station packages/ui)",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-12",
+      "status": "DRAFT",
+      "breaking": false,
+      "summary": "Initial library: Button, Badge, Card, TextField, TextArea, Select, Tabs, Alert (+ internal Spinner), implemented from design-system/components/fds-101-components.md with tests and Code Connect."
+    }
+  ]
+}

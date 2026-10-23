@@ -1,0 +1,172 @@
+/*
+ * PILOT IMPLEMENTATION TOKENS — traced to the FYNXT Design System (FDS-101).
+ *
+ * REVISED (Step 9B, FDS-101 Dev Mode pass): values below come from live Figma
+ * Dev Mode MCP reads of https://www.figma.com/design/3c44QQCA8h7GTZYH2EWn8H/FDS-101
+ * — real node text/variable data, not a screenshot transcription. Page
+ * "00 · Foundations — Tokens" (node 10:128, frame "Style Guide") supplied the
+ * Primitive Palette / Semantic Tokens / Typography / Spacing / Radius / Elevation
+ * sections; page "02 · Actions" (node 61:2) supplied the real Button component
+ * markup used to verify button typography/sizing; see
+ * docs/visual-fidelity-gap-analysis.md, "FDS-101 Token Consumption Audit" for the
+ * full CONSUMED/ASSUMED/UNKNOWN classification and the one documented conflict
+ * (button font-family) this pass found and resolved in favor of the actual
+ * component over the Typography section's descriptive text.
+ *
+ * A prior pass (before Dev Mode access) hand-transcribed some of these from a
+ * rendered screenshot and got two things wrong, now corrected here:
+ *   - font weights: guessed a 3-step scale (300/400/700); FDS-101 actually
+ *     defines 5 (Light 300 / Regular 400 / Medium 500 / Semibold 600 / Bold 700).
+ *   - row/header height and the popover shadow were ASSUMED; row/header height
+ *     is now traced to the real Leads FrozenColumnTable evidence (Sales Module
+ *     file), and the popover shadow now uses FDS-101's real `shadow-md` value.
+ *
+ * Values still marked ASSUMED below have no FDS-101 or Leads-reference source at
+ * all and are this pilot's own choice, explicitly not presented as formal.
+ *
+ * This file is intentionally isolated from src/template/TableList.css so it can be
+ * swapped wholesale for a real token export later — only these custom-property
+ * values change, not component markup or layout logic. Semantic names only —
+ * nothing here is named after Leads or any other entity.
+ */
+
+.tpl-list {
+  /* ---- Typography — FDS-101 "Typography" section ---- */
+  --tpl-font-family: "Sora", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* headings, titles, button text, emphasis */
+  --tpl-font-family-body: "Lexend", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* body copy, labels, inputs, helper text */
+  --tpl-font-size-xxs: 10px; /* FDS-101 `xxs` */
+  --tpl-font-size-xs: 12px;  /* FDS-101 `xs` — column headers, insight-card labels */
+  --tpl-font-size-sm: 14px;  /* FDS-101 `sm` — table body, filter chips, tabs */
+  --tpl-font-size-base: 16px; /* FDS-101 `base` */
+  --tpl-font-size-lg: 20px;  /* FDS-101 `lg` — used for the list title */
+  --tpl-font-size-xl: 24px;  /* FDS-101 `xl` */
+  --tpl-font-size-2xl: 32px; /* FDS-101 `2xl` — reserved for a future Metrics pattern's numbers */
+  --tpl-font-size-3xl: 48px; /* FDS-101 `3xl` — largest defined step, unused by this pilot */
+  /* Back-compat aliases used throughout TableList.css: */
+  --tpl-font-size-md: var(--tpl-font-size-lg);
+  --tpl-font-size-button: 13px; /* FDS-101 FORMAL COMPONENT VALUE — the real Button
+    component (page "02 · Actions", e.g. node 61:3/61:66) renders its label at a
+    literal 13px, off the documented type scale (10/12/14/16/20/24/32/48). Verified
+    via Dev Mode `get_design_context`, not guessed. */
+
+  /* FDS-101's Typography > Font Weights section (node 14:43) defines FIVE weights:
+   * Light 300 / Regular 400 / Medium 500 / Semibold 600 / Bold 700. A prior pass of
+   * this file (before Dev Mode access) misread this as a 3-step scale from a
+   * screenshot and collapsed Medium/Semibold into 400/700 — corrected here now that
+   * the real page text has been read directly. */
+  --tpl-font-weight-light: 300;
+  --tpl-font-weight-regular: 400;
+  --tpl-font-weight-medium: 500;
+  --tpl-font-weight-semibold: 600;
+  --tpl-font-weight-bold: 700;
+  --tpl-line-height-base: 1.5; /* ASSUMED — FDS-101's type scale prints sizes only, no line-height */
+
+  --tpl-letter-spacing-label: 0.04em; /* ASSUMED — uppercase column headers; no FDS-101 letter-spacing token seen */
+
+  /* ---- Color: surfaces & text — FDS-101 "Semantic Tokens" (node 13:2), verified
+     via live Dev Mode text reads — CONFIRMED, not screenshot-transcribed. ---- */
+  --tpl-color-bg-page: #f9f9fb;        /* `background` · neutral/50 */
+  --tpl-color-bg-surface: #ffffff;     /* `card` / `popover` / `input` / `sidebar` · neutral/0 */
+  --tpl-color-text-primary: #404040;   /* `foreground` · neutral/700 */
+  --tpl-color-text-secondary: #6b7280; /* `muted-foreground` · neutral/500 */
+  --tpl-color-text-muted: #9ca3af;     /* `muted` · neutral/400 — FDS-101 formal token, not
+    previously consumed; available for disabled/placeholder-weight text */
+  --tpl-color-text-on-primary: #ffffff; /* `on-primary` / `primary-foreground` · neutral/0 */
+
+  /* ---- Color: borders & dividers — FDS-101 ---- */
+  --tpl-color-border: #e5e7eb;        /* `border` default · neutral/200 */
+  --tpl-color-border-light: #f3f4f6;  /* `border` light · neutral/100 */
+  --tpl-color-border-strong: #d1d5db; /* `border` strong · neutral/300 */
+
+  /* ---- Color: actions — FDS-101 `primary`/`accent` (navy/500) ---- */
+  --tpl-color-action-primary-bg: #002666;       /* `primary` / `accent` · navy/500 */
+  --tpl-color-action-primary-bg-hover: #001e52; /* navy/600 — the next-darker formally-defined step, used for hover since FDS-101 defines no separate hover token */
+  --tpl-color-action-primary-text: #ffffff;     /* `primary-foreground` */
+  --tpl-color-action-secondary-bg: #ffffff;     /* `card` */
+  --tpl-color-action-secondary-border: #e5e7eb; /* `border` default */
+  --tpl-color-action-secondary-text: #404040;   /* `foreground` */
+
+  /* ---- Color: interactive/selection accents ---- */
+  --tpl-color-accent: #002666;                /* `accent` · navy/500 */
+  --tpl-color-accent-selected-border: #002666; /* `accent` */
+  --tpl-color-focus: #3b82f6;   /* value CONFIRMED as `info`/info-500 via Dev Mode; the CHOICE to reuse `info` for focus rings is still this pilot's own — FDS-101 defines no dedicated focus token */
+  --tpl-color-error: #ef4444;       /* `error` · red/500 — status/alert text */
+  --tpl-color-destructive: #e5381d; /* `destructive` · red/600 — destructive action buttons/menu items (FDS-101 defines these as two distinct reds; this pilot now follows that distinction instead of collapsing to one "danger" color) */
+  --tpl-color-hover-bg: #f9f9fb;       /* ASSUMED — no hover token in FDS-101; reuses the formally-defined `background` (neutral/50) tint rather than an invented gray */
+  --tpl-color-selected-row-bg: #ccebff; /* ASSUMED — no selected-row token in FDS-101; reuses the formally-defined `blue/50` primitive rather than an invented tint */
+
+  /* ---- Color: status/tag tints — text/border grounded in FDS-101; background
+     tints are ASSUMED where FDS-101's Style Guide frame did not show a light/50
+     step for that hue (only the saturated 500/600 step was captured). ---- */
+  --tpl-tag-info-bg: #ccebff;      /* ASSUMED tint — blue/50 (formally-defined primitive) */
+  --tpl-tag-info-text: #3b82f6;    /* `info` · info/500 */
+  --tpl-tag-warning-bg: #fdf1df;   /* ASSUMED tint — no warning/50 captured */
+  --tpl-tag-warning-text: #f59e0b; /* `warning` · warning/500 */
+  --tpl-tag-neutral-bg: #f3f4f6;   /* `border` light · neutral/100 (formally-defined) */
+  --tpl-tag-neutral-text: #6b7280; /* `muted-foreground` · neutral/500 */
+  --tpl-tag-success-bg: #e3f6e8;   /* ASSUMED tint — no green/50 captured */
+  --tpl-tag-success-text: #10b981; /* `success` · green/500 */
+  --tpl-tag-danger-bg: #fbe7e6;    /* ASSUMED tint — no red/50 captured */
+  --tpl-tag-danger-text: #e5381d;  /* `destructive` · red/600 */
+
+  /* ---- Spacing — FDS-101 "Spacing" section, base unit 4px ---- */
+  --tpl-space-1: 4px;  /* spacing/1 */
+  --tpl-space-2: 8px;  /* spacing/2 */
+  --tpl-space-3: 12px; /* spacing/3 */
+  --tpl-space-4: 16px; /* spacing/4 */
+  --tpl-space-5: 20px; /* spacing/5 */
+  --tpl-space-6: 24px; /* spacing/6 */
+
+  /* ---- Shape — FDS-101 "Border Radius" section ---- */
+  --tpl-radius-sm: 2px;   /* radius/sm */
+  --tpl-radius-default: 4px; /* radius/default */
+  --tpl-radius-md: 6px;   /* radius/md */
+  --tpl-radius-lg: 8px;   /* radius/lg */
+  --tpl-radius-xl: 12px;  /* radius/xl */
+  --tpl-radius-pill: 9999px; /* radius/full */
+  --tpl-border-width: 1px; /* ASSUMED — FDS-101 defines color/light/strong border tokens but not a formal width scale */
+
+  /* FDS-101's Elevation section (node 15:72) defines exact shadow CSS via Dev Mode
+   * `get_design_context` on the real "Shadows" frame — no longer an approximation. */
+  --tpl-shadow-sm: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);   /* FDS-101 `shadow-sm` */
+  --tpl-shadow-md: 0px 2px 12px 2px rgba(33, 33, 33, 0.12); /* FDS-101 `shadow-md` */
+  --tpl-shadow-lg: 0px 4px 6px -2px rgba(0, 0, 0, 0.05), 0px 10px 15px -3px rgba(0, 0, 0, 0.1); /* FDS-101 `shadow-lg` */
+  --tpl-shadow-popover: var(--tpl-shadow-md); /* used where a floating menu needs to visually separate from scrolled content beneath it — `shadow-md` is FDS-101's own choice for popover-weight elevation, matched by name */
+
+  /* ---- Control sizing / table density ----
+     Row/header height and the checkbox/action column widths are now OBSERVED FYNXT
+     COMPOSITION, traced to the real Leads table (Sales Module Figma file, node
+     3580:48836, frame "FrozenColumnTable") via Dev Mode `get_metadata` — not
+     assumed. Toolbar/chip/pagination-control sizes below are the same kind of
+     observed evidence, newly added in this pass. Base control heights (32/36px)
+     have no FDS-101 or Leads-reference source and remain this pilot's own ASSUMED
+     choice, distinct from FDS-101's own Button component heights (S=32/M=40/L=48),
+     which this pilot deliberately keeps separate from generic "controls" since
+     Table List's search/toolbar controls are visually smaller and denser than a
+     standalone FDS-101 Button in the Leads reference. */
+  --tpl-control-height-sm: 32px; /* ASSUMED — see note above */
+  --tpl-control-height-md: 36px; /* ASSUMED — see note above */
+  --tpl-row-height: 44px;        /* OBSERVED — Leads FrozenColumnTable body row container, e.g. node 3580:49143 (height 44) */
+  --tpl-header-row-height: 44px; /* OBSERVED — Leads FrozenColumnTable header container, node 3580:49103 (height ~43–44) */
+  --tpl-cell-padding-x: var(--tpl-space-3); /* OBSERVED — Leads header/cell text sits at x=12 within its column container, matching spacing/3 exactly */
+  --tpl-cell-padding-y: var(--tpl-space-2);
+  --tpl-control-column-width: 44px; /* OBSERVED — Leads checkbox column container width is exactly 44px (node 3580:49105), matching this pilot's prior ASSUMED value exactly */
+  --tpl-action-column-width: 61px;  /* OBSERVED — Leads frozen action-icon column container width is 61px (node 3580:49138), corrected from a prior ASSUMED 56px */
+
+  /* ---- Toolbar / pagination density — OBSERVED FYNXT COMPOSITION, new in this
+     pass. The Leads reference renders filters+search as ONE toolbar row (not
+     stacked boxes) and pagination pager controls as small icon-sized buttons, not
+     full control-height-sm buttons. ---- */
+  --tpl-toolbar-height: 56px;        /* OBSERVED — Leads TableFilterBar height (node 3580:49045) */
+  --tpl-chip-height: 30px;           /* OBSERVED — Leads quick-filter chip buttons and toolbar icon buttons (e.g. node 3580:49050, 3580:49080) */
+  --tpl-control-height-xs: 24px; /* OBSERVED — Leads pager prev/next icon buttons (node 3580:49589/49594) and the row-action icon button (node 12533:31413); reused for both since both are the same small square icon-button treatment in the Leads reference */
+  --tpl-pagination-current-size: 28px; /* OBSERVED — Leads current-page pill (node 3580:49592) */
+  --tpl-search-min-width: 208px; /* OBSERVED — Leads toolbar search input width (node 3580:49096), corrected from a prior ASSUMED 220px */
+  --tpl-tag-padding-y: 2px; /* ASSUMED — no FDS-101 Chip vertical-padding value was captured as text; kept as its own token so it stays a one-line swap if a real Chip export is obtained later */
+
+  /* OBSERVED — the real Leads "collection surface" (`DataTableWithFilters`, node
+     3580:49044) is ONE continuous card: a single border + radius/lg (8px) + this
+     exact drop-shadow, wrapping the toolbar, table, and pagination together —
+     verified via Dev Mode `get_design_context`, not assumed. */
+  --tpl-shadow-card: 0px 4px 10px rgba(0, 0, 0, 0.08), 0px 2px 4px rgba(0, 0, 0, 0.04);
+}

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Global Configuration: events and CRM attributes (prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #F6F7F9; --card: #FFFFFF; --ink: #1C2430; --muted: #5F6875; --line: #E1E5EA; --soft: #F3F5F8; --row: #FAFBFC;
+  --navy: #13296B; --navy-soft: #E9EEF9; --on-navy: #FFFFFF; --side: #EEF2FA;
+  --blue: #1F4FB8; --blue-soft: #EAF0FD; --teal: #0F6E73; --teal-soft: #E3F4F4;
+  --green: #1E6B34; --green-soft: #E6F4EA; --amber: #8A4B00; --amber-soft: #FFF4E5; --red: #B42318; --red-soft: #FDECEA;
+  --new: #6B3FD1; --new-soft: #F0EAFE;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F141B; --card: #171D26; --ink: #E7EBF0; --muted: #A3ADB9; --line: #2A3340; --soft: #1E2530; --row: #1A212B;
+    --navy: #9DB3F2; --navy-soft: #1F2A44; --on-navy: #0F141B; --side: #141B26;
+    --blue: #9DB8F5; --blue-soft: #1D2A45; --teal: #7FD3D6; --teal-soft: #123234;
+    --green: #86D39C; --green-soft: #123222; --amber: #F2C27B; --amber-soft: #3A2A10; --red: #F59B92; --red-soft: #3A1714;
+    --new: #C3A8FF; --new-soft: #2A2142;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F141B; --card: #171D26; --ink: #E7EBF0; --muted: #A3ADB9; --line: #2A3340; --soft: #1E2530; --row: #1A212B;
+  --navy: #9DB3F2; --navy-soft: #1F2A44; --on-navy: #0F141B; --side: #141B26;
+  --blue: #9DB8F5; --blue-soft: #1D2A45; --teal: #7FD3D6; --teal-soft: #123234;
+  --green: #86D39C; --green-soft: #123222; --amber: #F2C27B; --amber-soft: #3A2A10; --red: #F59B92; --red-soft: #3A1714;
+  --new: #C3A8FF; --new-soft: #2A2142;
+}
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font-family: 'Poppins', 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; line-height: 1.45; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.app { display: flex; min-height: 100vh; }
+.side { width: 250px; flex: none; background: var(--card); border-right: 1px solid var(--line); padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+.side .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; padding: 4px 8px 14px; }
+.side .logo span.f { width: 28px; height: 28px; border-radius: 6px; background: var(--navy); color: var(--on-navy); display: grid; place-items: center; font-size: 14px; }
+.side .grp { font-weight: 600; padding: 9px 10px; border-radius: 8px; }
+.side .grp.on { background: var(--navy); color: var(--on-navy); }
+.side .it { padding: 6px 10px 6px 26px; color: var(--ink); font-size: 13px; border-radius: 8px; }
+.side .it.on { background: var(--navy); color: var(--on-navy); font-weight: 600; }
+@media (max-width: 960px) { .side { display: none; } }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.pagehead { background: var(--card); border-bottom: 1px solid var(--line); padding: 14px 24px 0; }
+.pagehead h1 { margin: 0; font-size: 21px; font-weight: 600; }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+.tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 11px 14px; color: var(--muted); cursor: pointer; min-height: 44px; font-weight: 500; }
+.tab.on { border-bottom-color: var(--navy); color: var(--navy); font-weight: 600; }
+.content { padding: 20px 24px 48px; display: flex; flex-direction: column; gap: 16px; }
+.guide { background: var(--new-soft); border: 1px solid var(--new); border-radius: 10px; padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.guide .gh { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 600; color: var(--new); }
+.guide ul { margin: 0; padding-left: 18px; }
+.sectionhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.sectionhead h2 { margin: 0; font-size: 19px; font-weight: 600; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 9px 16px; min-height: 44px; cursor: pointer; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+.btn.primary { background: var(--navy); border-color: var(--navy); color: var(--on-navy); font-weight: 600; }
+.btn.link { border: none; background: none; color: var(--navy); padding: 6px 4px; font-weight: 600; }
+.btn.danger { color: var(--red); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.icon { width: 40px; height: 40px; padding: 0; justify-content: center; }
+.new { background: var(--new-soft); color: var(--new); border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.toolbar { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.toolbar .l { display: flex; gap: 10px; flex-wrap: wrap; }
+select, input[type=text], input[type=search], textarea { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 9px 12px; min-height: 44px; }
+textarea { width: 100%; min-height: 110px; resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tbody tr:nth-child(even) td { background: var(--row); }
+.foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 12px 14px; font-size: 13px; color: var(--muted); }
+.type { border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); white-space: nowrap; display: inline-block; }
+.type.sys { background: var(--soft); }
+.type.cus { background: var(--blue-soft); color: var(--blue); border-color: transparent; }
+.type.crm { background: var(--teal-soft); color: var(--teal); border-color: transparent; }
+.mchip { background: var(--blue-soft); color: var(--blue); border-radius: 6px; padding: 3px 8px; font-size: 12px; margin: 2px 4px 2px 0; display: inline-block; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.pill { border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; display: inline-block; }
+.p-ok { background: var(--green-soft); color: var(--green); }
+.p-wait { background: var(--amber-soft); color: var(--amber); }
+.p-off { background: var(--soft); color: var(--muted); }
+.p-blt { background: var(--soft); color: var(--ink); border: 1px solid var(--line); }
+.p-cus { background: var(--blue-soft); color: var(--blue); }
+.form { max-width: 760px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > .lab { font-size: 13px; font-weight: 600; }
+.req { color: var(--red); }
+.seg { display: flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.seg button { flex: 1; border: none; border-right: 1px solid var(--line); background: var(--card); padding: 10px 12px; min-height: 44px; cursor: pointer; }
+.seg button:last-child { border-right: none; }
+.seg button.on { background: var(--navy); color: var(--on-navy); font-weight: 600; }
+.info { background: var(--soft); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--navy); }
+.err { color: var(--red); font-size: 12px; }
+.filterbox { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; grid-template-columns: minmax(0, 2fr) 70px minmax(0, 2fr) auto auto; gap: 10px; align-items: end; }
+@media (max-width: 700px) { .filterbox { grid-template-columns: minmax(0, 1fr); } }
+.chipx { display: inline-flex; align-items: center; gap: 6px; background: var(--soft); border-radius: 8px; padding: 6px 10px; font-size: 13px; margin: 0 6px 6px 0; }
+.chipx button { border: none; background: none; cursor: pointer; color: var(--muted); min-width: 24px; min-height: 24px; }
+.formfoot { position: sticky; bottom: 0; background: var(--card); border-top: 1px solid var(--line); padding: 12px 24px; display: flex; justify-content: flex-end; gap: 10px; }
+.menuwrap { position: relative; display: inline-block; }
+.menu { position: absolute; right: 0; top: 44px; z-index: 30; width: 230px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 28px rgba(16, 24, 40, 0.16); padding: 4px; }
+.menu button { display: block; width: 100%; text-align: left; border: none; background: none; padding: 10px 12px; border-radius: 6px; cursor: pointer; min-height: 40px; }
+.menu button:hover { background: var(--soft); }
+.overlay { position: fixed; inset: 0; background: rgba(15, 20, 27, 0.5); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+.modal { width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; background: var(--card); border-radius: 14px; box-shadow: 0 20px 48px rgba(16, 24, 40, 0.3); }
+.modal .mh { padding: 18px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; }
+.modal .mb { padding: 18px 22px; display: flex; flex-direction: column; gap: 16px; }
+.modal .mf { padding: 14px 22px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 640px) { .grid2, .grid3 { grid-template-columns: minmax(0, 1fr); } }
+.radio { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; flex: 1; }
+.radio.on { border-color: var(--navy); background: var(--navy-soft); }
+.code { background: var(--soft); border: 1px dashed var(--line); border-radius: 8px; padding: 14px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--muted); }
+.builder { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 900px) { .builder { grid-template-columns: minmax(0, 1fr); } }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.tile { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 9px 10px; text-align: left; cursor: pointer; min-height: 44px; display: flex; flex-direction: column; gap: 2px; }
+.tile:hover { border-color: var(--navy); }
+.tile .k { font-size: 11px; color: var(--muted); font-family: ui-monospace, Menlo, Consolas, monospace; overflow-wrap: anywhere; }
+.ops { display: flex; gap: 6px; flex-wrap: wrap; }
+.ops button { border: 1px solid var(--line); background: var(--card); border-radius: 8px; min-width: 44px; min-height: 40px; cursor: pointer; font-weight: 600; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--card); padding: 10px 16px; border-radius: 10px; font-size: 13px; z-index: 60; max-width: 90vw; }
+.empty { padding: 28px; text-align: center; color: var(--muted); }
+.crumb { font-size: 13px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function () {
+  var EVENTS0 = [
+    { id: 'EVT-001', name: 'LOGIN', type: 'System', site: '', vol: '48,213', last: '14 hours ago', related: true,
+      params: [['userId', 'Text'], ['productType', 'Text'], ['device', 'Text'], ['platform', 'Text'], ['ipCountry', 'Text']], metrics: ['login_activity', 'login_count'] },
+    { id: 'EVT-002', name: 'TRADE_EXECUTED', type: 'System', site: '', vol: '31,204', last: '14 hours ago', related: false,
+      params: [['loginId', 'Text'], ['symbol', 'Text'], ['volume', 'Number'], ['side', 'Text'], ['price', 'Number'], ['productType', 'Text']], metrics: ['trade_count'] },
+    { id: 'EVT-003', name: 'DEPOSIT_COMPLETED', type: 'System', site: '', vol: '8,421', last: '15 hours ago', related: true,
+      params: [['userId', 'Text'], ['amount', 'Number'], ['currency', 'Text'], ['method', 'Text']], metrics: ['deposit_volume'] },
+    { id: 'EVT-004', name: 'KYC_SUBMITTED', type: 'Custom', site: 'orionfx.com', vol: '342', last: '18 hours ago', related: false,
+      params: [['userId', 'Text'], ['documentType', 'Text'], ['country', 'Text']], metrics: [] },
+    { id: 'EVT-005', name: 'CAMPAIGN_CLICK', type: 'Custom', site: 'orionfx.com, orionfx.co.uk', vol: '1,876', last: '16 hours ago', related: false,
+      params: [['campaignId', 'Text'], ['userId', 'Text'], ['channel', 'Text']], metrics: [] }
+  ];
+  var ATTRS0 = [
+    ['New Leads', 'new_leads', 'Client Lifecycle Stage'], ['New Deals (Closed-Won)', 'new_deals_closed_won', 'Client Lifecycle Stage'],
+    ['New Registered Clients', 'new_registered_clients', 'Client Lifecycle Stage'], ['New Approved Clients', 'new_approved_clients', 'Client Lifecycle Stage'],
+    ['New FTD Clients', 'new_ftd_clients', 'Client Lifecycle Stage'], ['New Funded Clients', 'new_funded_clients', 'Client Lifecycle Stage'],
+    ['New Active Clients', 'new_active_clients', 'Client Lifecycle Stage'], ['Dormant Accounts', 'dormant_accounts', 'Client Lifecycle Stage'],
+    ['Gross Deposit', 'gross_deposit', 'Deposit & Financial'], ['Net Deposit', 'net_deposit', 'Deposit & Financial'], ['First Deposit Amount', 'first_deposit_amount', 'Deposit & Financial']
+  ];
+  var OBJECTS = {
+    'Trading Account': [['Balance', 'balance', 'Number'], ['Profit Loss', 'profit_loss', 'Number'], ['Leverage', 'leverage', 'Number'], ['Margin Level', 'margin_level', 'Number'], ['Free Margin', 'free_margin', 'Number'], ['Currency Info', 'currency_info', 'Text']],
+    'Contact': [['Country', 'country', 'Text'], ['KYC Status', 'kyc_status', 'Text'], ['Created Date', 'created_date', 'Date']]
+  };
+  var ACT = { Meetings: ['MEETING', ['Scheduled', 'Completed', 'Cancelled']], Tasks: ['TASK', ['Open', 'Completed']], Tickets: ['TICKET', ['Open', 'Resolved', 'Closed']], Interactions: ['INTERACTION', ['Logged', 'Answered', 'Missed']] };
+  var S;
+  function init() {
+    S = {
+      tab: 'events', view: 'list', modal: null, menu: null, toast: null, guide: true,
+      events: JSON.parse(JSON.stringify(EVENTS0)), nextEvt: 6,
+      sites: [{ name: 'Main website', domains: 'orionfx.com', key: 'sk_live_4f2a', status: 'Receiving', vol: '12,480', last: '2 min ago' },
+              { name: 'UK website', domains: 'orionfx.co.uk', key: 'sk_live_91c0', status: 'Receiving', vol: '3,215', last: '15 min ago' }],
+      attrs: ATTRS0.map(function (a, i) { return { id: 'CRM-' + String(i + 1).padStart(3, '0'), name: a[0], key: a[1], cat: a[2], type: 'Number', usable: 'Calculation', used: 'Tier KPIs, Rebate KPIs', status: 'Built-in' }; }),
+      nextAttr: 12,
+      f: { type: 'all', map: 'all', q: '', cat: 'all', aq: '' },
+      map: null, crm: null, field: null, site: null,
+      b: { tier: { name: '', kind: 'formula', formula: '', group: 'crm', obj: 'Trading Account' }, rebate: { name: '', kind: 'formula', formula: '', group: 'crm', obj: 'Trading Account' } }
+    };
+  }
+  init();
+  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function allMetrics() { var out = []; S.events.forEach(function (e) { e.metrics.forEach(function (m) { out.push({ m: m, ev: e.name }); }); }); return out; }
+  function toast(t) { S.toast = t; clearTimeout(toast.t); toast.t = setTimeout(function () { S.toast = null; render(); }, 3200); }
+  function snake(t) { return String(t || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, ''); }
+  function NEW() { return ' <span class="new">New</span>'; }
+  function typeTag(t) { var c = t === 'System' ? 'sys' : t === 'Custom' ? 'cus' : 'crm'; return '<span class="type ' + c + '">' + (t === 'Custom' ? 'Custom (SDK)' : t) + '</span>'; }
+  var KEB = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>';
+  var PLUS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>';
+  var BACK = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>';
+  var X = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>';
+
+  function sidebar() {
+    var it = function (t, on) { return '<div class="it' + (on ? ' on' : '') + '">' + t + '</div>'; };
+    return '<nav class="side" aria-label="Main"><div class="logo"><span class="f">F</span>FYNXT</div><div class="grp">Dashboard</div><div class="grp on">Sales</div>' +
+      ['Leads', 'Deals', 'Contacts', 'Accounts', 'Companies'].map(function (t) { return it(t); }).join('') +
+      '<div class="grp">Tickets &amp; Activities</div>' + ['Tickets', 'Interactions', 'Tasks', 'Meetings'].map(function (t) { return it(t); }).join('') +
+      '<div class="grp">Operations</div>' + ['Payments', 'Trading Accounts', 'PAMM', 'MAM', 'Copy Trading', 'IB/Affiliates', 'Incentive Program', 'Loyalty Points Definition'].map(function (t) { return it(t); }).join('') +
+      it('Global Config', true) + '<div class="grp">Reports</div></nav>';
+  }
+  function head() {
+    var tabs = [['general', 'General Settings'], ['tier', 'Incentive Tier KPIs'], ['rebate', 'Rebate KPIs'], ['events', 'Event Catalog'], ['crm', 'CRM Attributes']];
+    return '<header class="pagehead"><h1>Global Configuration</h1><div class="small muted">Configure global settings for all incentive programs and formulas</div><div class="tabs" role="tablist">' +
+      tabs.map(function (t) { return '<button type="button" role="tab" aria-selected="' + (S.tab === t[0]) + '" class="tab' + (S.tab === t[0] ? ' on' : '') + '" data-act="tab" data-v="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div></header>';
+  }
+  function guide() {
+    if (!S.guide) return '<div><button type="button" class="btn link" data-act="guide">Show what to try</button></div>';
+    return '<section class="guide" aria-label="What to try"><div class="gh">What to try <button type="button" class="btn link" data-act="guide">Hide</button></div>' +
+      '<div class="small">Items marked <span class="new">New</span> are the additions to the current design. Everything else matches today\'s screens.</div><ul class="small">' +
+      '<li>Event Catalog: filter by type and mapping status; click <strong>+</strong> on a row to map it.</li>' +
+      '<li>Map to variable: try each aggregation. <em>Sum of value</em> on LOGIN has no number fields; on TRADE_EXECUTED it offers volume and price. Add a filter, then publish.</li>' +
+      '<li><strong>Websites (SDK)</strong>: add a website, then pause, regenerate the key or remove it from the ⋯ menu.</li>' +
+      '<li><strong>+ Add CRM activity as event</strong>: it appears in the catalog as CRM Activity, ready to map.</li>' +
+      '<li>CRM Attributes: add a field. Incentive Tier KPIs: published metrics show under <strong>Event metrics</strong>.</li></ul></section>';
+  }
+
+  // ---------- Event Catalog
+  function catalog() {
+    var f = S.f;
+    var rows = S.events.filter(function (e) {
+      if (f.type !== 'all' && e.type !== f.type) return false;
+      if (f.map === 'mapped' && !e.metrics.length) return false;
+      if (f.map === 'not' && e.metrics.length) return false;
+      if (f.q && e.name.toLowerCase().indexOf(f.q.toLowerCase()) < 0) return false;
+      return true;
+    });
+    var opt = function (v, cur, l) { return '<option value="' + v + '"' + (v === cur ? ' selected' : '') + '>' + l + '</option>'; };
+    var body = rows.length ? rows.map(function (e) {
+      var p = e.params.slice(0, 2).map(function (x) { return x[0]; }).join(', ') + (e.params.length > 2 ? ' <span style="color:var(--navy);font-weight:600">+' + (e.params.length - 2) + ' more</span>' : '');
+      return '<tr><td><input type="checkbox" aria-label="Select ' + e.id + '"></td><td>' + e.id + '</td><td class="mono">' + e.name + '</td><td>' + typeTag(e.type) + '</td><td class="small">' + (e.site ? esc(e.site) : '<span class="muted">—</span>') + '</td><td><strong>' + e.vol + '</strong></td><td class="muted">' + e.last + '</td>' +
+        '<td class="mono small muted">' + p + '</td><td>' + (e.metrics.length ? e.metrics.map(function (m) { return '<span class="mchip">' + esc(m) + '</span>'; }).join('') : '<em class="muted">Not mapped</em>') + '</td>' +
+        '<td><button type="button" class="btn icon" aria-label="Map ' + e.name + ' to a variable" data-act="map" data-v="' + e.id + '">' + PLUS + '</button></td></tr>';
+    }).join('') : '<tr><td colspan="10" class="empty">No events match these filters.</td></tr>';
+    return '<div class="sectionhead"><div><h2>Event Catalog</h2><div class="small muted">Custom events sent by your platform, mapped into metrics for incentive programs</div></div>' +
+      '<div class="btns"><button type="button" class="btn" data-act="websites">Websites (SDK)' + NEW() + '</button><button type="button" class="btn" data-act="refresh">Refresh</button><button type="button" class="btn primary" data-act="openCrm">+ Add CRM activity as event' + NEW() + '</button></div></div>' +
+      '<section class="card"><div class="toolbar"><div class="l"><select aria-label="Type" data-bind="f.type">' + opt('all', f.type, 'All Types') + opt('System', f.type, 'System') + opt('Custom', f.type, 'Custom (SDK)') + opt('CRM Activity', f.type, 'CRM Activity') + '</select>' +
+      '<select aria-label="Mapping status" data-bind="f.map">' + opt('all', f.map, 'All Mapping Status') + opt('mapped', f.map, 'Mapped') + opt('not', f.map, 'Not mapped') + '</select></div>' +
+      '<input type="search" aria-label="Search by event name" placeholder="Search by event name..." data-bind="f.q" value="' + esc(f.q) + '"></div>' +
+      '<div class="scroll"><table style="min-width:1180px"><thead><tr><th></th><th>ID</th><th>Event name</th><th>Type</th><th>Website' + NEW() + '</th><th>Volume (30D)</th><th>Last seen</th><th>Sample parameters</th><th>Mapped metrics</th><th>Actions</th></tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '<div class="foot"><span>Rows per page: 25 · 1–' + rows.length + ' of ' + rows.length + '</span><span>Type: System = FYNXT platform · Custom (SDK) = your websites · CRM Activity = defined from a CRM activity</span></div></section>';
+  }
+
+  // ---------- Map to variable
+  function mapPage() {
+    var m = S.map, e = S.events.filter(function (x) { return x.id === m.ev; })[0];
+    var aggs = [['count', 'Count occurrences'], ['streak', 'Consecutive days'], ['since', 'Days since last occurrence'], ['sum', 'Sum of value']];
+    var nums = e.params.filter(function (p) { return p[1] === 'Number'; });
+    var nameErr = '', all = allMetrics().map(function (x) { return x.m; });
+    if (m.metric && !/^[a-z][a-z0-9_]*$/.test(m.metric)) nameErr = 'Use lowercase letters, numbers and _ only, starting with a letter.';
+    else if (m.metric && all.indexOf(m.metric) >= 0) nameErr = 'This metric name is already used.';
+    var ok = m.scope && m.metric && !nameErr && (m.agg !== 'sum' || m.value);
+    var f = '';
+    if (m.filters.length) f += '<div>' + m.filters.map(function (x, i) { return '<span class="chipx"><span class="mono">' + esc(x.k) + ' = ' + esc(x.v) + '</span><button type="button" aria-label="Remove filter" data-act="rmFilter" data-v="' + i + '">' + X + '</button></span>'; }).join('') + '</div>';
+    if (m.draft) {
+      f += '<div class="filterbox"><label class="field"><span class="lab">Key</span><select data-bind="map.draft.k"><option value="">Select key...</option>' + e.params.map(function (p) { return '<option' + (m.draft.k === p[0] ? ' selected' : '') + '>' + p[0] + '</option>'; }).join('') + '</select></label>' +
+        '<label class="field"><span class="lab">Op</span><input type="text" value="=" disabled aria-label="Operator"></label>' +
+        '<label class="field"><span class="lab">Value</span><input type="text" data-bind="map.draft.v" placeholder="Enter value..." value="' + esc(m.draft.v) + '"></label>' +
+        '<button type="button" class="btn primary" data-act="addFilter"' + (m.draft.k && m.draft.v ? '' : ' disabled') + '>Add</button><button type="button" class="btn" data-act="cancelFilter">Cancel</button></div>';
+    } else f += '<div><button type="button" class="btn link" data-act="newFilter">+ Add filter</button></div>';
+    return '<div class="sectionhead"><div class="btns"><button type="button" class="btn icon" aria-label="Back to Event Catalog" data-act="back">' + BACK + '</button><div><h2>Map to variable</h2><div class="small muted">Create a metric from <span class="mono">' + e.name + '</span> for use in Tier &amp; Rewards conditions</div></div></div></div>' +
+      '<section class="card" style="padding:24px 20px 0"><div class="form">' +
+      '<div class="field"><span class="lab">Event</span><input type="text" class="mono" value="' + e.name + '" disabled></div>' +
+      '<div class="field"><span class="lab">Aggregation <span class="req">*</span></span><div class="seg" role="group" aria-label="Aggregation">' + aggs.map(function (a) { return '<button type="button" class="' + (m.agg === a[0] ? 'on' : '') + '" data-act="agg" data-v="' + a[0] + '">' + a[1] + '</button>'; }).join('') + '</div>' +
+      '<div class="small muted">' + { count: 'Counts how many times the event happened in the period.', streak: 'Counts how many days in a row the event happened.', since: 'Days since the event last happened. Useful for inactivity.', sum: 'Adds up a number field from the event.' }[m.agg] + '</div></div>' +
+      (m.agg === 'sum' ? '<div class="field"><span class="lab">Value field <span class="req">*</span> <span class="muted" style="font-weight:400">(from event payload)</span></span>' +
+        (nums.length ? '<select data-bind="map.value"><option value="">Select value field...</option>' + nums.map(function (p) { return '<option' + (m.value === p[0] ? ' selected' : '') + '>' + p[0] + '</option>'; }).join('') + '</select>' : '<div class="info">This event has no number fields, so it cannot be summed. Choose another aggregation.</div>') + '</div>' : '') +
+      '<div class="field"><span class="lab">Scope <span class="req">*</span></span><select data-bind="map.scope"><option value="">Select scope...</option>' + ['User', 'Trading account', 'Team'].map(function (s) { return '<option' + (m.scope === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></div>' +
+      '<div class="field"><span class="lab">Attribute to</span>' + (e.related ? '<div class="info">This event includes related parties</div><select data-bind="map.attr">' + ["This event's own scope", 'Referrer', 'Teammates'].map(function (s) { return '<option' + (m.attr === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' : '<div class="small muted">This event has no related parties, so it is credited to its own scope.</div>') + '</div>' +
+      '<div class="field"><span class="lab">Filter <span class="muted" style="font-weight:400">(optional)</span></span>' + f + '</div>' +
+      '<div class="field"><span class="lab">Publish as metric <span class="req">*</span></span><input type="text" class="mono" data-bind="map.metric" placeholder="e.g., login_activity" value="' + esc(m.metric) + '">' + (nameErr ? '<span class="err">' + nameErr + '</span>' : '<span class="small muted">Shown in the Formula Builder under Event metrics.</span>') + '</div>' +
+      '</div><div class="formfoot" style="margin:20px -20px 0;border-radius:0 0 12px 12px"><button type="button" class="btn" data-act="back">Cancel</button><button type="button" class="btn primary" data-act="publish"' + (ok ? '' : ' disabled') + '>Publish metric</button></div></section>';
+  }
+
+  // ---------- Websites (SDK)
+  function websites() {
+    var pill = function (s) { return '<span class="pill ' + (s === 'Receiving' ? 'p-ok' : s === 'Paused' ? 'p-off' : 'p-wait') + '">' + s + '</span>'; };
+    var body = S.sites.length ? '<div class="scroll"' + (S.menu && S.menu.indexOf('site') === 0 ? ' style="padding-bottom:240px"' : '') + '><table style="min-width:900px"><thead><tr><th>Website</th><th>Domains</th><th>Site key</th><th>Status</th><th>Events (30D)</th><th>Last event</th><th>Actions</th></tr></thead><tbody>' +
+      S.sites.map(function (w, i) {
+        var open = S.menu === 'site' + i;
+        return '<tr><td><strong>' + esc(w.name) + '</strong></td><td class="mono small">' + esc(w.domains) + '</td><td class="mono small">sk_live_••••' + w.key.slice(-4) + '</td><td>' + pill(w.status) + '</td><td>' + w.vol + '</td><td class="muted">' + w.last + '</td>' +
+          '<td><div class="menuwrap"><button type="button" class="btn icon" aria-label="Actions for ' + esc(w.name) + '" aria-expanded="' + open + '" data-act="menu" data-v="site' + i + '">' + KEB + '</button>' +
+          (open ? '<div class="menu" role="menu"><button type="button" role="menuitem" data-act="copyKey" data-v="' + i + '">Copy site key</button><button type="button" role="menuitem" data-act="copyCode" data-v="' + i + '">Copy setup code</button><button type="button" role="menuitem" data-act="regen" data-v="' + i + '">Regenerate site key</button><button type="button" role="menuitem" data-act="pause" data-v="' + i + '">' + (w.status === 'Paused' ? 'Resume events' : 'Pause events') + '</button><button type="button" role="menuitem" class="danger" style="color:var(--red)" data-act="rmSite" data-v="' + i + '">Remove website</button></div>' : '') +
+          '</div></td></tr>';
+      }).join('') + '</tbody></table></div>' : '<div class="empty">No websites yet. Add your first website to start receiving SDK events.</div>';
+    return '<div class="sectionhead"><div class="btns"><button type="button" class="btn icon" aria-label="Back to Event Catalog" data-act="back">' + BACK + '</button><div><div class="crumb muted">Event Catalog ›</div><h2>Websites (SDK)' + NEW() + '</h2><div class="small muted">Websites that send custom events to FYNXT. One brand can connect several websites, each with its own site key.</div></div></div>' +
+      '<div class="btns"><button type="button" class="btn primary" data-act="openSite">+ Add website</button></div></div><section class="card">' + body + '</section>';
+  }
+
+  // ---------- CRM Attributes
+  function attrs() {
+    var f = S.f;
+    var rows = S.attrs.filter(function (a) { return (f.cat === 'all' || a.cat === f.cat) && (!f.aq || (a.name + a.key).toLowerCase().indexOf(f.aq.toLowerCase()) >= 0); });
+    var cats = ['Client Lifecycle Stage', 'Deposit & Financial', 'Trading', 'Custom'];
+    var body = rows.length ? rows.map(function (a) {
+      var open = S.menu === 'attr' + a.id;
+      return '<tr><td><input type="checkbox" aria-label="Select ' + a.id + '"></td><td>' + a.id + '</td><td><div style="font-weight:500">' + esc(a.name) + '</div><div class="mono small muted">' + esc(a.key) + '</div></td><td>' + esc(a.cat) + '</td><td class="mono small muted">' + a.type + '</td><td>' + a.usable + '</td><td class="small muted">' + a.used + '</td>' +
+        '<td><span class="pill ' + (a.status === 'Built-in' ? 'p-blt' : 'p-cus') + '">' + a.status + '</span></td><td>' +
+        (a.status === 'Custom' ? '<div class="menuwrap"><button type="button" class="btn icon" aria-label="Actions for ' + esc(a.name) + '" aria-expanded="' + open + '" data-act="menu" data-v="attr' + a.id + '">' + KEB + '</button>' + (open ? '<div class="menu" role="menu"><button type="button" role="menuitem" data-act="editAttr" data-v="' + a.id + '">Edit</button><button type="button" role="menuitem" style="color:var(--red)" data-act="rmAttr" data-v="' + a.id + '">Delete</button></div>' : '') + '</div>' : '') + '</td></tr>';
+    }).join('') : '<tr><td colspan="9" class="empty">No fields match.</td></tr>';
+    return '<div class="sectionhead"><div><h2>CRM attributes</h2><div class="small muted">Bring in your own CRM fields and use them as variables anywhere in the platform.</div></div><div class="btns"><button type="button" class="btn primary" data-act="openField">+ Add field</button></div></div>' +
+      '<section class="card"><div class="toolbar"><div class="l"><select aria-label="Category" data-bind="f.cat"><option value="all">All Categories</option>' + cats.map(function (c) { return '<option' + (f.cat === c ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '</select></div>' +
+      '<input type="search" aria-label="Search by field name" placeholder="Search by field name..." data-bind="f.aq" value="' + esc(f.aq) + '"></div>' +
+      '<div class="scroll"' + (S.menu && S.menu.indexOf('attr') === 0 ? ' style="padding-bottom:120px"' : '') + '><table style="min-width:1080px"><thead><tr><th></th><th>ID</th><th>Field name</th><th>Category</th><th>Type</th><th>Usable as</th><th>Used in</th><th>Status</th><th>Actions</th></tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '<div class="foot"><span>Rows per page: 25 · 1–' + rows.length + ' of ' + rows.length + '</span></div></section>';
+  }
+
+  // ---------- Formula Builder
+  function builder(which) {
+    var b = S.b[which], ms = allMetrics();
+    var tiles = '';
+    if (b.group === 'crm') {
+      var list = b.obj === 'CRM Attributes' ? S.attrs.map(function (a) { return [a.name, a.key, a.type]; }) : OBJECTS[b.obj];
+      var pre = b.obj === 'CRM Attributes' ? 'crm' : snake(b.obj);
+      tiles = '<label class="field"><span class="lab">Object</span><select data-bind="b.' + which + '.obj">' + ['Trading Account', 'Contact', 'CRM Attributes'].map(function (o) { return '<option' + (b.obj === o ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select></label>' +
+        '<div class="tiles">' + list.map(function (t) { return '<button type="button" class="tile" data-act="ins" data-w="' + which + '" data-v="' + pre + '.' + t[1] + '"><span>' + esc(t[0]) + '</span><span class="k">' + esc(t[1]) + ' · ' + t[2] + '</span></button>'; }).join('') + '</div>';
+    } else {
+      tiles = ms.length ? '<div class="tiles">' + ms.map(function (x) { return '<button type="button" class="tile" data-act="ins" data-w="' + which + '" data-v="metric.' + x.m + '"><span class="mono" style="font-size:13px">' + esc(x.m) + '</span><span class="k">from ' + x.ev + '</span></button>'; }).join('') + '</div>' : '<div class="empty">No event metrics yet. Map an event in the Event Catalog.</div>';
+    }
+    var ops = ['+', '−', '×', '÷', '(', ')', '>', '<', '>=', '<=', '=='];
+    return '<div class="sectionhead"><div><h2>Publish ' + (which === 'tier' ? 'Tier' : 'Rebate') + ' KPIs</h2><div class="small muted">Configure KPI metrics for incentive program ' + (which === 'tier' ? 'tier' : 'rebate') + ' calculations</div></div></div>' +
+      '<div class="builder"><section class="card" style="padding:16px;display:flex;flex-direction:column;gap:12px"><h3 style="margin:0;font-size:16px">Variables</h3>' +
+      '<div class="seg" role="group" aria-label="Variable source"><button type="button" class="' + (b.group === 'crm' ? 'on' : '') + '" data-act="grp" data-w="' + which + '" data-v="crm">CRM fields</button><button type="button" class="' + (b.group === 'events' ? 'on' : '') + '" data-act="grp" data-w="' + which + '" data-v="events">Event metrics' + NEW() + '</button></div>' +
+      (b.group === 'events' ? '<div class="small muted">Metrics published from the Event Catalog' + NEW() + '</div>' : '<div class="small muted">Fields from CRM objects and CRM Attributes</div>') + tiles + '</section>' +
+      '<section class="card" style="padding:18px;display:flex;flex-direction:column;gap:16px">' +
+      '<label class="field"><span class="lab">KPI Name <span class="req">*</span></span><input type="text" data-bind="b.' + which + '.name" placeholder="e.g., Total Trading Volume" value="' + esc(b.name) + '"></label>' +
+      '<div class="field"><span class="lab">KPI Type</span><div class="seg"><button type="button" class="' + (b.kind === 'variable' ? 'on' : '') + '" data-act="kind" data-w="' + which + '" data-v="variable">Variable Only</button><button type="button" class="' + (b.kind === 'formula' ? 'on' : '') + '" data-act="kind" data-w="' + which + '" data-v="formula">Formula Based</button></div></div>' +
+      (b.kind === 'formula' ? '<div class="field"><span class="lab">Formula <span class="req">*</span></span><div class="ops">' + ops.map(function (o) { return '<button type="button" data-act="op" data-w="' + which + '" data-v="' + o + '">' + o + '</button>'; }).join('') + '</div><textarea data-bind="b.' + which + '.formula" placeholder="Click a variable or operator to build the formula...">' + esc(b.formula) + '</textarea></div>'
+        : '<div class="field"><span class="lab">Select Variable <span class="req">*</span></span><div class="info">' + (b.formula ? '<span class="mono">' + esc(b.formula) + '</span>' : 'Click a variable from the left panel to select it') + '</div></div>') +
+      '<div class="btns" style="justify-content:flex-end"><button type="button" class="btn" data-act="clearF" data-w="' + which + '">Cancel</button><button type="button" class="btn primary" data-act="pubKpi" data-w="' + which + '"' + (b.name && b.formula ? '' : ' disabled') + '>Publish KPI</button></div></section></div>';
+  }
+
+  // ---------- Modals
+  function modal() {
+    if (!S.modal) return '';
+    var inner = '';
+    if (S.modal === 'crm') {
+      var c = S.crm, a = ACT[c.type];
+      inner = '<div class="mh"><div><h2 style="margin:0;font-size:18px">Add CRM activity as event' + NEW() + '</h2><div class="small muted">Turn an activity your CRM records into an event. Then map it like any other event.</div></div><button type="button" class="btn icon" aria-label="Close" data-act="close">' + X + '</button></div>' +
+        '<div class="mb"><label class="field"><span class="lab">Activity type <span class="req">*</span></span><select data-bind="crm.type">' + Object.keys(ACT).map(function (k) { return '<option' + (c.type === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></label>' +
+        '<div class="field"><label style="display:flex;gap:8px;align-items:center;font-weight:600;font-size:13px"><input type="checkbox" data-act="toggleCond"' + (c.cond ? ' checked' : '') + '> Only when</label>' +
+        (c.cond ? '<div class="grid3"><label class="field"><span class="lab">Field</span><select disabled><option>Status</option></select></label><label class="field"><span class="lab">Condition</span><select disabled><option>is</option></select></label><label class="field"><span class="lab">Value</span><select data-bind="crm.val">' + a[1].map(function (v) { return '<option' + (c.val === v ? ' selected' : '') + '>' + v + '</option>'; }).join('') + '</select></label></div>' : '<div class="small muted">Off: every ' + c.type.toLowerCase().replace(/s$/, '') + ' becomes an event.</div>') + '</div>' +
+        '<div class="field"><span class="lab">Belongs to</span><div class="grid2">' +
+        '<button type="button" class="radio' + (c.who === 'contact' ? ' on' : '') + '" data-act="who" data-v="contact"><span><strong>Contact on the activity</strong><br><span class="small muted">e.g. the client who attended</span></span></button>' +
+        '<button type="button" class="radio' + (c.who === 'owner' ? ' on' : '') + '" data-act="who" data-v="owner"><span><strong>Owner of the activity</strong><br><span class="small muted">e.g. the IB or user who ran it</span></span></button></div></div>' +
+        '<label class="field"><span class="lab">Event name <span class="req">*</span></span><input type="text" class="mono" data-bind="crm.name" value="' + esc(c.name) + '">' + (c.err ? '<span class="err">' + c.err + '</span>' : '<span class="small muted">Shown in the Event Catalog as type CRM Activity.</span>') + '</label></div>' +
+        '<div class="mf"><button type="button" class="btn" data-act="close">Cancel</button><button type="button" class="btn primary" data-act="saveCrm"' + (c.name ? '' : ' disabled') + '>Save event</button></div>';
+    } else if (S.modal === 'site') {
+      var s = S.site;
+      if (s.done) {
+        inner = '<div class="mh"><div><h2 style="margin:0;font-size:18px">Website added</h2><div class="small muted">' + esc(s.name) + ' · ' + esc(s.domains) + '</div></div><button type="button" class="btn icon" aria-label="Close" data-act="close">' + X + '</button></div>' +
+          '<div class="mb"><div class="field"><span class="lab">Site key</span><div class="btns"><span class="code" style="flex:1;border-style:solid;color:var(--ink)">' + s.key + '</span><button type="button" class="btn" data-act="copyNew">Copy</button></div></div>' +
+          '<div class="field"><span class="lab">Setup code</span><div class="code">[SDK setup code from engineering, with this site key]</div><span class="small muted">Paste this on every page of the website. Events start appearing in the Event Catalog as Custom (SDK).</span></div></div>' +
+          '<div class="mf"><button type="button" class="btn primary" data-act="close">Done</button></div>';
+      } else {
+        inner = '<div class="mh"><div><h2 style="margin:0;font-size:18px">Add website' + NEW() + '</h2><div class="small muted">Each website gets its own site key.</div></div><button type="button" class="btn icon" aria-label="Close" data-act="close">' + X + '</button></div>' +
+          '<div class="mb"><label class="field"><span class="lab">Website name <span class="req">*</span></span><input type="text" data-bind="site.name" value="' + esc(s.name) + '" placeholder="e.g., Promo site"></label>' +
+          '<label class="field"><span class="lab">Domains <span class="req">*</span></span><input type="text" class="mono" data-bind="site.domains" value="' + esc(s.domains) + '" placeholder="e.g., promo.orionfx.com"><span class="small muted">Events are accepted only from these domains. Separate several with commas.</span></label></div>' +
+          '<div class="mf"><button type="button" class="btn" data-act="close">Cancel</button><button type="button" class="btn primary" data-act="saveSite"' + (s.name && s.domains ? '' : ' disabled') + '>Save website</button></div>';
+      }
+    } else if (S.modal === 'field') {
+      var fd = S.field;
+      inner = '<div class="mh"><div><h2 style="margin:0;font-size:18px">' + (fd.editId ? 'Edit field' : 'Add field') + '</h2><div class="small muted">A CRM field you can use as a variable in KPIs.</div></div><button type="button" class="btn icon" aria-label="Close" data-act="close">' + X + '</button></div>' +
+        '<div class="mb"><label class="field"><span class="lab">Field name <span class="req">*</span></span><input type="text" data-bind="field.name" value="' + esc(fd.name) + '" placeholder="e.g., Webinars Attended"><span class="small muted mono">key: ' + (snake(fd.name) || '—') + '</span></label>' +
+        '<div class="grid2"><label class="field"><span class="lab">Category</span><select data-bind="field.cat">' + ['Client Lifecycle Stage', 'Deposit & Financial', 'Trading', 'Custom'].map(function (c) { return '<option' + (fd.cat === c ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '</select></label>' +
+        '<label class="field"><span class="lab">Type</span><select data-bind="field.type">' + ['Number', 'Text', 'Date', 'Yes/No'].map(function (t) { return '<option' + (fd.type === t ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></label></div>' +
+        '<div class="info">Usable as: <strong>' + (fd.type === 'Number' ? 'Calculation' : 'Condition') + '</strong>. Number fields can be calculated; other types are used in conditions.</div></div>' +
+        '<div class="mf"><button type="button" class="btn" data-act="close">Cancel</button><button type="button" class="btn primary" data-act="saveField"' + (fd.name ? '' : ' disabled') + '>Save field</button></div>';
+    }
+    return '<div class="overlay" data-act="overlay"><div class="modal" role="dialog" aria-modal="true">' + inner + '</div></div>';
+  }
+
+  function render() {
+    var fe = document.activeElement, bind = fe && fe.getAttribute && fe.getAttribute('data-bind'), pos = null;
+    try { pos = fe && fe.selectionStart; } catch (e) { pos = null; }
+    var body;
+    if (S.tab === 'events') body = S.view === 'map' ? mapPage() : S.view === 'websites' ? websites() : catalog();
+    else if (S.tab === 'crm') body = attrs();
+    else if (S.tab === 'tier') body = builder('tier');
+    else if (S.tab === 'rebate') body = builder('rebate');
+    else body = '<section class="card" style="padding:24px"><h2 style="margin:0 0 6px;font-size:18px">General Settings</h2><div class="muted">Unchanged. Not part of this flow.</div></section>';
+    document.getElementById('root').innerHTML = '<div class="app">' + sidebar() + '<div class="main">' + head() + '<main class="content">' + guide() + body + '</main></div></div>' + modal() + (S.toast ? '<div class="toast" role="status">' + esc(S.toast) + '</div>' : '');
+    if (bind) { var el = document.querySelector('[data-bind="' + bind + '"]'); if (el) { el.focus(); try { if (pos != null) el.setSelectionRange(pos, pos); } catch (e) {} } }
+  }
+  function get(path) { return path.split('.').reduce(function (o, k) { return o == null ? o : o[k]; }, S); }
+  function set(path, v) {
+    var ks = path.split('.'), o = S; for (var i = 0; i < ks.length - 1; i++) o = o[ks[i]];
+    o[ks[ks.length - 1]] = v;
+    if (path === 'crm.type' || path === 'crm.val') autoName();
+    if (path === 'crm.name') S.crm.edited = true;
+  }
+  function autoName() { var c = S.crm; if (c.edited) return; var a = ACT[c.type]; if (a[1].indexOf(c.val) < 0) c.val = a[1][a[1].length > 1 ? 1 : 0]; c.name = a[0] + (c.cond ? '_' + c.val.toUpperCase() : ''); }
+  function copy(t) { try { navigator.clipboard.writeText(t); } catch (e) {} }
+
+  document.addEventListener('click', function (ev) {
+    var el = ev.target.closest('[data-act]'); if (!el || el.disabled) return;
+    var a = el.getAttribute('data-act'), v = el.getAttribute('data-v'), w = el.getAttribute('data-w');
+    if (a === 'overlay') { if (ev.target !== el) return; S.modal = null; }
+    else if (a !== 'menu') S.menu = null;
+    if (a === 'tab') { S.tab = v; S.view = 'list'; }
+    else if (a === 'guide') S.guide = !S.guide;
+    else if (a === 'refresh') toast('Catalog refreshed.');
+    else if (a === 'map') { S.view = 'map'; S.map = { ev: v, agg: 'count', value: '', scope: '', attr: "This event's own scope", filters: [], draft: null, metric: '' }; window.scrollTo(0, 0); }
+    else if (a === 'back') { S.view = 'list'; }
+    else if (a === 'agg') { S.map.agg = v; if (v !== 'sum') S.map.value = ''; }
+    else if (a === 'newFilter') S.map.draft = { k: '', v: '' };
+    else if (a === 'cancelFilter') S.map.draft = null;
+    else if (a === 'addFilter') { S.map.filters.push(S.map.draft); S.map.draft = null; }
+    else if (a === 'rmFilter') S.map.filters.splice(Number(v), 1);
+    else if (a === 'publish') { var m = S.map, e = S.events.filter(function (x) { return x.id === m.ev; })[0]; e.metrics.push(m.metric); S.view = 'list'; toast('Metric ' + m.metric + ' published. It is now in the Formula Builder under Event metrics.'); }
+    else if (a === 'websites') { S.view = 'websites'; window.scrollTo(0, 0); }
+    else if (a === 'menu') { S.menu = S.menu === v ? null : v; }
+    else if (a === 'copyKey') { copy(S.sites[v].key); toast('Site key copied.'); }
+    else if (a === 'copyCode') { toast('Setup code copied.'); }
+    else if (a === 'regen') { S.sites[v].key = 'sk_live_' + Math.random().toString(16).slice(2, 6); toast('New site key created. Update the setup code on ' + S.sites[v].name + '; the old key stops working.'); }
+    else if (a === 'pause') { var st = S.sites[v]; st.status = st.status === 'Paused' ? (st.vol === '0' ? 'Waiting for first event' : 'Receiving') : 'Paused'; toast(st.status === 'Paused' ? 'Events from ' + st.name + ' are paused.' : 'Events from ' + st.name + ' resumed.'); }
+    else if (a === 'rmSite') { var n = S.sites[v].name; S.sites.splice(Number(v), 1); toast(n + ' removed.'); }
+    else if (a === 'openSite') { S.modal = 'site'; S.site = { name: '', domains: '', done: false }; }
+    else if (a === 'saveSite') { var s = S.site; s.key = 'sk_live_' + Math.random().toString(16).slice(2, 6); S.sites.push({ name: s.name, domains: s.domains, key: s.key, status: 'Waiting for first event', vol: '0', last: '—' }); s.done = true; }
+    else if (a === 'copyNew') { copy(S.site.key); toast('Site key copied.'); }
+    else if (a === 'openCrm') { S.modal = 'crm'; S.crm = { type: 'Meetings', cond: true, val: 'Completed', who: 'contact', name: 'MEETING_COMPLETED', edited: false, err: '' }; }
+    else if (a === 'toggleCond') { S.crm.cond = !S.crm.cond; autoName(); }
+    else if (a === 'who') S.crm.who = v;
+    else if (a === 'saveCrm') {
+      var c = S.crm, nm = c.name.trim().toUpperCase();
+      if (!/^[A-Z][A-Z0-9_]*$/.test(nm)) { c.err = 'Use capital letters, numbers and _ only.'; render(); return; }
+      if (S.events.some(function (x) { return x.name === nm; })) { c.err = 'An event with this name already exists.'; render(); return; }
+      S.events.push({ id: 'EVT-' + String(S.nextEvt++).padStart(3, '0'), name: nm, type: 'CRM Activity', site: '', vol: '0', last: 'Not seen yet', related: c.who === 'contact',
+        params: [[c.who === 'contact' ? 'contactId' : 'ownerId', 'Text'], ['status', 'Text'], ['activityDate', 'Date'], ['durationMinutes', 'Number']], metrics: [] });
+      S.modal = null; S.f.type = 'all'; S.f.map = 'all'; toast(nm + ' added to the Event Catalog. Click + on its row to map it.');
+    }
+    else if (a === 'openField') { S.modal = 'field'; S.field = { name: '', cat: 'Custom', type: 'Number', editId: null }; }
+    else if (a === 'editAttr') { var at = S.attrs.filter(function (x) { return x.id === v; })[0]; S.modal = 'field'; S.field = { name: at.name, cat: at.cat, type: at.type, editId: at.id }; }
+    else if (a === 'rmAttr') { S.attrs = S.attrs.filter(function (x) { return x.id !== v; }); toast('Field deleted.'); }
+    else if (a === 'saveField') {
+      var fd = S.field, usable = fd.type === 'Number' ? 'Calculation' : 'Condition';
+      if (fd.editId) { var t = S.attrs.filter(function (x) { return x.id === fd.editId; })[0]; t.name = fd.name; t.key = snake(fd.name); t.cat = fd.cat; t.type = fd.type; t.usable = usable; toast('Field updated.'); }
+      else { S.attrs.push({ id: 'CRM-' + String(S.nextAttr++).padStart(3, '0'), name: fd.name, key: snake(fd.name), cat: fd.cat, type: fd.type, usable: usable, used: '—', status: 'Custom' }); toast('Field added. It is now in the Formula Builder under CRM Attributes.'); }
+      S.modal = null;
+    }
+    else if (a === 'close') S.modal = null;
+    else if (a === 'grp') S.b[w].group = v;
+    else if (a === 'kind') { S.b[w].kind = v; S.b[w].formula = ''; }
+    else if (a === 'ins') { var b = S.b[w]; b.formula = b.kind === 'variable' ? v : (b.formula ? b.formula + ' ' : '') + v; if (!b.name && b.kind === 'variable') b.name = v.split('.').pop().replace(/_/g, ' ').replace(/\b\w/g, function (m) { return m.toUpperCase(); }); }
+    else if (a === 'op') { var bb = S.b[w]; bb.formula = (bb.formula ? bb.formula + ' ' : '') + v; }
+    else if (a === 'clearF') { S.b[w] = { name: '', kind: S.b[w].kind, formula: '', group: S.b[w].group, obj: S.b[w].obj }; }
+    else if (a === 'pubKpi') { toast('KPI "' + S.b[w].name + '" published (prototype only).'); S.b[w].name = ''; S.b[w].formula = ''; }
+    render();
+  });
+  document.addEventListener('change', function (ev) {
+    var el = ev.target.closest('[data-bind]'); if (!el) return;
+    set(el.getAttribute('data-bind'), el.value); render();
+  });
+  document.addEventListener('input', function (ev) {
+    var el = ev.target.closest('[data-bind]'); if (!el || el.tagName === 'SELECT') return;
+    set(el.getAttribute('data-bind'), el.value); render();
+  });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && (S.modal || S.menu)) { S.modal = null; S.menu = null; render(); } });
+  render();
+})();
+</script>
+</body>
+</html>

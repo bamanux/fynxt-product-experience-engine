@@ -1,0 +1,10 @@
+{
+  "forceLoginMethod": "claudeai",
+  "forceLoginOrgUUID": ["REPLACE-WITH-FYNXT-ORG-UUID"],
+  "allowManagedMcpServersOnly": true,
+  "allowedMcpServers": [
+    { "serverUrl": "https://mcp.figma.com/*" },
+    { "serverUrl": "https://mcp.atlassian.com/*" },
+    { "serverUrl": "https://api.githubcopilot.com/*" }
+  ]
+}

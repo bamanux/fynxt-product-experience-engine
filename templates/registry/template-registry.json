@@ -1,0 +1,199 @@
+{
+  "registryVersion": "1.0.0",
+  "description": "Canonical, machine-readable index of every FYNXT Experience Template. Claude and humans must search this registry before proposing or creating a new template, per CLAUDE.md (Template-First Principle) and docs/template-specification.md.",
+  "specification": "docs/template-specification.md",
+  "validStatuses": [
+    "DRAFT",
+    "EXPERIMENTAL",
+    "VALIDATED",
+    "PRODUCTION-READY",
+    "STANDARD",
+    "DEPRECATED"
+  ],
+  "lastUpdated": "2026-09-18",
+  "templates": [
+    {
+      "id": "FYNXT-TPL-LIST-001",
+      "name": "List / Collection View",
+      "category": "Data Display",
+      "description": "PLACEHOLDER ONLY — no implementation exists. Illustrates the eventual shape of a reusable template for rendering a sortable, filterable, paginated list or table of records with optional row selection and bulk actions.",
+      "status": "DRAFT",
+      "placeholder": true,
+      "version": "0.0.0",
+      "supportedModules": [],
+      "supportedPersonas": [],
+      "capabilities": [
+        "sorting",
+        "filtering",
+        "pagination",
+        "row-selection",
+        "bulk-actions",
+        "column-configuration"
+      ],
+      "supportedStates": [
+        "loading",
+        "empty",
+        "error",
+        "partial-error",
+        "success",
+        "disabled",
+        "read-only"
+      ],
+      "configurationParameters": [
+        {
+          "name": "columns",
+          "type": "array",
+          "required": true,
+          "default": null,
+          "description": "Illustrative only — column definitions the list renders."
+        },
+        {
+          "name": "pageSize",
+          "type": "number",
+          "required": false,
+          "default": 25,
+          "description": "Illustrative only — number of rows per page."
+        },
+        {
+          "name": "selectable",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Illustrative only — whether row selection and bulk actions are enabled."
+        }
+      ],
+      "dependencies": {
+        "designSystem": [],
+        "frontend": []
+      },
+      "location": {
+        "path": "experience-library/templates/FYNXT-TPL-LIST-001/",
+        "exists": false,
+        "note": "Directory and template.md have not been created. Do not treat this path as real until a DRAFT template.md exists there."
+      },
+      "documentation": null,
+      "examples": [],
+      "owner": null,
+      "lastUpdated": "2026-09-18",
+      "notes": "Example registry entry only, added to demonstrate the required schema. Represents a plausible future template, not an approved or authored one."
+    },
+    {
+      "id": "FYNXT-TPL-DETAIL-001",
+      "name": "Detail / Record View",
+      "category": "Data Display",
+      "description": "PLACEHOLDER ONLY — no implementation exists. Illustrates the eventual shape of a reusable template for viewing a single record's fields, grouped and optionally tabbed, with related records.",
+      "status": "DRAFT",
+      "placeholder": true,
+      "version": "0.0.0",
+      "supportedModules": [],
+      "supportedPersonas": [],
+      "capabilities": [
+        "field-grouping",
+        "tabbed-sections",
+        "related-records",
+        "inline-edit (conceptual only)"
+      ],
+      "supportedStates": [
+        "loading",
+        "not-found",
+        "error",
+        "success",
+        "disabled",
+        "read-only"
+      ],
+      "configurationParameters": [
+        {
+          "name": "sections",
+          "type": "array",
+          "required": true,
+          "default": null,
+          "description": "Illustrative only — grouped field sections to render."
+        },
+        {
+          "name": "editable",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Illustrative only — whether inline editing is enabled."
+        }
+      ],
+      "dependencies": {
+        "designSystem": [],
+        "frontend": []
+      },
+      "location": {
+        "path": "experience-library/templates/FYNXT-TPL-DETAIL-001/",
+        "exists": false,
+        "note": "Directory and template.md have not been created. Do not treat this path as real until a DRAFT template.md exists there."
+      },
+      "documentation": null,
+      "examples": [],
+      "owner": null,
+      "lastUpdated": "2026-09-18",
+      "notes": "Example registry entry only, added to demonstrate the required schema. Represents a plausible future template, not an approved or authored one."
+    },
+    {
+      "id": "FYNXT-TPL-FORM-001",
+      "name": "Structured Form",
+      "category": "Forms & Input",
+      "description": "PLACEHOLDER ONLY — no implementation exists. Illustrates the eventual shape of a reusable template for a validated, possibly multi-step data entry form.",
+      "status": "DRAFT",
+      "placeholder": true,
+      "version": "0.0.0",
+      "supportedModules": [],
+      "supportedPersonas": [],
+      "capabilities": [
+        "field-validation",
+        "multi-step",
+        "conditional-fields",
+        "draft-save (conceptual only)"
+      ],
+      "supportedStates": [
+        "idle",
+        "validating",
+        "submitting",
+        "success",
+        "error",
+        "disabled",
+        "read-only"
+      ],
+      "configurationParameters": [
+        {
+          "name": "fields",
+          "type": "array",
+          "required": true,
+          "default": null,
+          "description": "Illustrative only — field schema for the form."
+        },
+        {
+          "name": "steps",
+          "type": "array",
+          "required": false,
+          "default": null,
+          "description": "Illustrative only — step grouping for a multi-step form."
+        },
+        {
+          "name": "submitLabel",
+          "type": "string",
+          "required": false,
+          "default": "Submit",
+          "description": "Illustrative only — label for the submit action."
+        }
+      ],
+      "dependencies": {
+        "designSystem": [],
+        "frontend": []
+      },
+      "location": {
+        "path": "experience-library/templates/FYNXT-TPL-FORM-001/",
+        "exists": false,
+        "note": "Directory and template.md have not been created. Do not treat this path as real until a DRAFT template.md exists there."
+      },
+      "documentation": null,
+      "examples": [],
+      "owner": null,
+      "lastUpdated": "2026-09-18",
+      "notes": "Example registry entry only, added to demonstrate the required schema. Represents a plausible future template, not an approved or authored one."
+    }
+  ]
+}

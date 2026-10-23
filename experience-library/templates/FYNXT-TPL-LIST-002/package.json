@@ -1,0 +1,29 @@
+{
+  "name": "fynxt-tpl-list-002",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Implementation pilot for FYNXT-TPL-LIST-002 (Table List). Self-contained: this is the first frontend code in the repository, so tooling is scoped to this template rather than imposed on the whole repo. See README.md.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5183",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.5.0",
+    "@testing-library/react": "16.0.1",
+    "@testing-library/user-event": "14.5.2",
+    "@types/react": "18.3.11",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.2",
+    "jsdom": "25.0.1",
+    "typescript": "5.6.3",
+    "vite": "5.4.9",
+    "vitest": "2.1.3"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "forceLoginMethod": "claudeai",
+  "forceLoginOrgUUID": ["REPLACE-WITH-FYNXT-ORG-UUID"]
+}

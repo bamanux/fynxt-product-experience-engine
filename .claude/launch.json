@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fynxt-tpl-list-002-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "experience-library/templates/FYNXT-TPL-LIST-002", "run", "dev"],
+      "port": 5183
+    },
+    {
+      "name": "fdi-studio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../fynxt-design-code-station", "run", "dev"],
+      "port": 5190
+    },
+    {
+      "name": "fdi-studio-hosting",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/baman/fynxt-work/studio-hosting", "run", "dev", "-w", "@fynxt/studio", "--", "--port", "5192"],
+      "port": 5192
+    }
+  ]
+}

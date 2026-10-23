@@ -1,0 +1,602 @@
+/*
+ * FYNXT-TPL-LIST-002 visual treatment.
+ *
+ * Every color/spacing/shape value used here comes from TableList.tokens.css —
+ * see that file's header and docs/visual-alignment-audit.md for what's OBSERVED
+ * vs. ASSUMED. Nothing in THIS file should hardcode a color, size, or radius
+ * directly; if a new value is needed, add a token first so migration to a real
+ * FYNXT design system stays a token-file swap, not a rewrite of this file.
+ */
+
+.tpl-list {
+  /* FDS-101's Typography section describes Sora as covering "button text," but
+   * the real Button component (page "02 · Actions", verified via Dev Mode on
+   * nodes 61:3 and 61:66) is actually implemented in Lexend:Medium at 13px — a
+   * genuine conflict between FDS-101's descriptive text and its own component
+   * markup, documented in docs/visual-fidelity-gap-analysis.md. This file follows
+   * the real component (Lexend for buttons, `--tpl-font-size-button`) as the
+   * higher-fidelity source; Sora (--tpl-font-family) is applied only to
+   * `.tpl-list__title`, where no contradicting component evidence exists. */
+  font-family: var(--tpl-font-family-body);
+  font-size: var(--tpl-font-size-sm);
+  line-height: var(--tpl-line-height-base);
+  color: var(--tpl-color-text-primary);
+  background: var(--tpl-color-bg-surface);
+}
+
+.tpl-list__visually-hidden-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tpl-list *:focus-visible {
+  outline: 2px solid var(--tpl-color-focus);
+  outline-offset: 2px;
+}
+
+/* ---- Header ---- */
+
+.tpl-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tpl-space-3);
+  margin-bottom: var(--tpl-space-2);
+}
+
+.tpl-list__title {
+  font-family: var(--tpl-font-family); /* Sora — FDS-101 heading face */
+  font-size: var(--tpl-font-size-md);
+  font-weight: var(--tpl-font-weight-bold);
+  margin: 0;
+}
+
+/* ---- View tabs ---- */
+
+.tpl-list__view-tabs {
+  display: flex;
+  gap: var(--tpl-space-4);
+  border-bottom: var(--tpl-border-width) solid var(--tpl-color-border);
+  margin-bottom: var(--tpl-space-4);
+}
+
+.tpl-list__view-tab {
+  padding: var(--tpl-space-2) var(--tpl-space-3);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--tpl-font-size-sm);
+  color: var(--tpl-color-text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tpl-list__view-tab[aria-current="true"] {
+  color: var(--tpl-color-text-primary);
+  border-bottom-color: var(--tpl-color-accent);
+  font-weight: var(--tpl-font-weight-semibold);
+}
+
+/* ---- Insights extension-point slot ----
+ * Section 12: not the full Metrics pattern — a slim single-line bar (icon-less
+ * label + summary text), not a dominant padded box, so an unattached pattern
+ * doesn't read as unfinished product surface. */
+
+.tpl-list__insights {
+  display: flex;
+  align-items: baseline;
+  gap: var(--tpl-space-2);
+  padding: var(--tpl-space-2) 0;
+  margin-bottom: var(--tpl-space-3);
+  border-bottom: var(--tpl-border-width) solid var(--tpl-color-border);
+  font-size: var(--tpl-font-size-xs);
+}
+
+.tpl-list__insights-label {
+  font-family: var(--tpl-font-family); /* Sora — matches FDS-101's documented "section titles" usage */
+  font-weight: var(--tpl-font-weight-semibold);
+  color: var(--tpl-color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--tpl-letter-spacing-label);
+}
+
+.tpl-list__insights-body {
+  color: var(--tpl-color-text-secondary);
+}
+
+/* ---- Quick Filters / Advanced Filters / Manage Columns / Saved Views —
+ * extension-point slots. Rendered as small pill chips (Section 3's "Chip" primitive
+ * treatment, --tpl-chip-height) matching the real Leads toolbar's filter-chip and
+ * icon-button sizing, instead of a descriptive placeholder sentence in a dashed
+ * box. The unimplemented-pattern note moves to the `title` tooltip. */
+
+.tpl-list__pattern-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tpl-space-1);
+  height: var(--tpl-chip-height);
+  padding: 0 var(--tpl-space-3);
+  border: var(--tpl-border-width) dashed var(--tpl-color-border-strong);
+  border-radius: var(--tpl-radius-pill);
+  color: var(--tpl-color-text-secondary);
+  font-size: var(--tpl-font-size-xs);
+  white-space: nowrap;
+}
+
+.tpl-list__pattern-slot svg {
+  flex-shrink: 0;
+}
+
+/* ---- Collection surface ----
+ * OBSERVED — the real Leads `DataTableWithFilters` (node 3580:49044) is ONE
+ * continuous card: a single border + radius/lg (8px) + `--tpl-shadow-card`,
+ * wrapping the toolbar, table (or state), and pagination together. This wrapper
+ * owns that outer border/radius/shadow/background; the pieces inside it (toolbar,
+ * table-scroll, status box) no longer draw their own competing border/radius —
+ * only a thin internal divider where the toolbar meets what follows it, matching
+ * the real `TableFilterBar`'s own `border-bottom` (no independent box). */
+
+.tpl-list__collection {
+  border: var(--tpl-border-width) solid var(--tpl-color-border);
+  border-radius: var(--tpl-radius-lg);
+  background: var(--tpl-color-bg-surface);
+  box-shadow: var(--tpl-shadow-card);
+  overflow: hidden;
+  margin-bottom: var(--tpl-space-3);
+}
+
+/* ---- Narrowing / toolbar region ----
+ * Section 13: one toolbar row, filter affordances on the left, search + column/
+ * view utilities on the right — matching the real Leads TableFilterBar (node
+ * 3580:49045) instead of two stacked full-width placeholder boxes. Its own
+ * border/radius/background were removed in favor of `.tpl-list__collection`'s;
+ * it keeps only the bottom divider the real TableFilterBar itself has. */
+
+.tpl-list__narrowing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tpl-space-3);
+  min-height: var(--tpl-toolbar-height);
+  padding: var(--tpl-space-2) var(--tpl-space-3);
+  border-bottom: var(--tpl-border-width) solid var(--tpl-color-border-light);
+  flex-wrap: wrap;
+}
+
+.tpl-list__narrowing-left,
+.tpl-list__narrowing-right {
+  display: flex;
+  align-items: center;
+  gap: var(--tpl-space-2);
+  flex-wrap: wrap;
+}
+
+.tpl-list__search-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tpl-list__search-icon {
+  position: absolute;
+  left: var(--tpl-space-3);
+  color: var(--tpl-color-text-muted);
+  pointer-events: none;
+}
+
+.tpl-list__search {
+  height: var(--tpl-control-height-sm);
+  padding: 0 var(--tpl-space-3) 0 calc(var(--tpl-space-3) * 2 + 16px);
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  border-radius: var(--tpl-radius-pill);
+  min-width: var(--tpl-search-min-width);
+  font: inherit;
+  color: var(--tpl-color-text-primary);
+  background: var(--tpl-color-bg-surface);
+}
+
+.tpl-list__search::placeholder {
+  color: var(--tpl-color-text-secondary);
+}
+
+/* ---- Buttons ---- */
+
+.tpl-list__button {
+  height: var(--tpl-control-height-sm);
+  padding: 0 var(--tpl-space-3);
+  border-radius: var(--tpl-radius-default);
+  font-family: var(--tpl-font-family-body); /* Lexend — real FDS-101 Button component, not Sora */
+  font-size: var(--tpl-font-size-button);
+  font-weight: var(--tpl-font-weight-medium);
+  cursor: pointer;
+}
+
+.tpl-list__button--primary {
+  border: none;
+  background: var(--tpl-color-action-primary-bg);
+  color: var(--tpl-color-action-primary-text);
+}
+
+.tpl-list__button--primary:hover:not(:disabled) {
+  background: var(--tpl-color-action-primary-bg-hover);
+}
+
+.tpl-list__button--secondary {
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  background: var(--tpl-color-action-secondary-bg);
+  color: var(--tpl-color-action-secondary-text);
+}
+
+.tpl-list__button--secondary:hover:not(:disabled) {
+  background: var(--tpl-color-hover-bg);
+}
+
+.tpl-list__button:disabled,
+.tpl-list__search:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---- Bulk action bar ---- */
+
+.tpl-list-bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--tpl-space-2);
+  padding: var(--tpl-space-2) var(--tpl-space-3);
+  margin-bottom: var(--tpl-space-2);
+  background: var(--tpl-color-selected-row-bg);
+  border-radius: var(--tpl-radius-md);
+}
+
+.tpl-list-bulk-bar__count {
+  font-weight: var(--tpl-font-weight-semibold);
+  margin-right: var(--tpl-space-2);
+}
+
+.tpl-list-bulk-bar button {
+  height: var(--tpl-control-height-sm);
+  padding: 0 var(--tpl-space-3);
+  border-radius: var(--tpl-radius-default);
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  background: var(--tpl-color-bg-surface);
+  cursor: pointer;
+  font-family: var(--tpl-font-family-body); /* Lexend — real FDS-101 Button component, not Sora */
+  font-size: var(--tpl-font-size-button);
+  font-weight: var(--tpl-font-weight-medium);
+}
+
+.tpl-list-bulk-bar button[data-destructive="true"] {
+  color: var(--tpl-color-destructive);
+  border-color: var(--tpl-color-destructive);
+}
+
+/* ---- Table ---- */
+
+.tpl-list__table-scroll {
+  /* Border/radius now live on `.tpl-list__collection`; this only needs its own
+   * horizontal scroll region. */
+  overflow-x: auto;
+}
+
+.tpl-list__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tpl-list__table th,
+.tpl-list__table td {
+  text-align: left;
+  padding: var(--tpl-cell-padding-y) var(--tpl-cell-padding-x);
+  white-space: nowrap;
+  background: var(--tpl-color-bg-surface);
+}
+
+.tpl-list__table thead th {
+  height: var(--tpl-header-row-height);
+  font-size: var(--tpl-font-size-xs);
+  font-weight: var(--tpl-font-weight-medium);
+  letter-spacing: var(--tpl-letter-spacing-label);
+  text-transform: uppercase;
+  color: var(--tpl-color-text-secondary);
+  border-bottom: var(--tpl-border-width) solid var(--tpl-color-border);
+}
+
+.tpl-list__table tbody tr {
+  height: var(--tpl-row-height);
+}
+
+.tpl-list__table tbody td {
+  border-bottom: var(--tpl-border-width) solid var(--tpl-color-border);
+}
+
+.tpl-list__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tpl-list__table tbody tr:hover td {
+  background: var(--tpl-color-hover-bg);
+}
+
+.tpl-list__table tbody tr[data-selected] td {
+  background: var(--tpl-color-selected-row-bg);
+}
+
+.tpl-list--disabled .tpl-list__table tbody tr {
+  cursor: not-allowed;
+}
+
+.tpl-list--disabled .tpl-list__table {
+  opacity: 0.7;
+}
+
+.tpl-list__sort-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--tpl-font-size-xs);
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+/* ---- Tag (see Tag.tsx) ---- */
+
+.tpl-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--tpl-tag-padding-y) var(--tpl-space-2);
+  border-radius: var(--tpl-radius-pill);
+  font-size: var(--tpl-font-size-xs);
+  font-weight: var(--tpl-font-weight-medium);
+  white-space: nowrap;
+}
+
+.tpl-tag--info {
+  background: var(--tpl-tag-info-bg);
+  color: var(--tpl-tag-info-text);
+}
+
+.tpl-tag--warning {
+  background: var(--tpl-tag-warning-bg);
+  color: var(--tpl-tag-warning-text);
+}
+
+.tpl-tag--neutral {
+  background: var(--tpl-tag-neutral-bg);
+  color: var(--tpl-tag-neutral-text);
+}
+
+.tpl-tag--success {
+  background: var(--tpl-tag-success-bg);
+  color: var(--tpl-tag-success-text);
+}
+
+.tpl-tag--danger {
+  background: var(--tpl-tag-danger-bg);
+  color: var(--tpl-tag-danger-text);
+}
+
+/* ---- Frozen columns (docs/visual-alignment-audit.md, Frozen Column Rule) ----
+ * position: sticky keeps these cells visible during horizontal scroll without
+ * splitting the table into separate DOM tables — DOM/tab order is unaffected,
+ * so keyboard navigation stays exactly as logical as an unfrozen table's. */
+
+.tpl-list__cell--frozen-left,
+.tpl-list__cell--frozen-right {
+  position: sticky;
+  z-index: 1;
+}
+
+.tpl-list__table thead .tpl-list__cell--frozen-left,
+.tpl-list__table thead .tpl-list__cell--frozen-right {
+  z-index: 2; /* header frozen cells sit above body frozen cells */
+}
+
+.tpl-list__cell--frozen-left {
+  box-shadow: var(--tpl-border-width) 0 0 var(--tpl-color-border);
+}
+
+.tpl-list__cell--frozen-right {
+  box-shadow: calc(var(--tpl-border-width) * -1) 0 0 var(--tpl-color-border);
+}
+
+/* frozen cells must repaint their own background per-row so scrolled content
+ * doesn't show through — hover/selected still need to win over the plain
+ * surface color, so these are intentionally last. */
+.tpl-list__table tbody tr:hover .tpl-list__cell--frozen-left,
+.tpl-list__table tbody tr:hover .tpl-list__cell--frozen-right {
+  background: var(--tpl-color-hover-bg);
+}
+
+.tpl-list__table tbody tr[data-selected] .tpl-list__cell--frozen-left,
+.tpl-list__table tbody tr[data-selected] .tpl-list__cell--frozen-right {
+  background: var(--tpl-color-selected-row-bg);
+}
+
+/* ---- Row actions pattern (default implementation) ---- */
+
+.tpl-list-row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--tpl-space-1);
+  justify-content: flex-end;
+}
+
+.tpl-list-row-actions__direct-button {
+  height: var(--tpl-control-height-xs);
+  padding: 0 var(--tpl-space-2);
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  border-radius: var(--tpl-radius-default);
+  background: var(--tpl-color-bg-surface);
+  cursor: pointer;
+  font-family: var(--tpl-font-family-body); /* Lexend — real FDS-101 Button component, not Sora */
+  font-size: var(--tpl-font-size-xs);
+  font-weight: var(--tpl-font-weight-medium);
+  color: var(--tpl-color-action-secondary-text);
+}
+
+.tpl-list-row-actions__direct-button[data-destructive="true"] {
+  color: var(--tpl-color-destructive);
+  border-color: var(--tpl-color-destructive);
+}
+
+.tpl-list-row-actions__direct-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tpl-list-row-actions__overflow {
+  position: relative;
+  display: inline-block;
+}
+
+.tpl-list-row-actions__trigger {
+  height: var(--tpl-control-height-xs);
+  width: var(--tpl-control-height-xs);
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  background: var(--tpl-color-bg-surface);
+  border-radius: var(--tpl-radius-default);
+  cursor: pointer;
+}
+
+.tpl-list-row-actions__menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: var(--tpl-color-bg-surface);
+  border: var(--tpl-border-width) solid var(--tpl-color-border);
+  border-radius: var(--tpl-radius-md);
+  box-shadow: var(--tpl-shadow-popover);
+  list-style: none;
+  margin: var(--tpl-space-1) 0 0;
+  padding: var(--tpl-space-1) 0;
+  min-width: 160px; /* IMPLEMENTATION-SPECIFIC — sized for typical action-label lengths; no FDS-101 or Leads-reference menu-width evidence exists */
+  z-index: 10;
+}
+
+.tpl-list-row-actions__menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: var(--tpl-space-2) var(--tpl-space-3);
+  cursor: pointer;
+  font-family: var(--tpl-font-family-body); /* Lexend — menu rows read as body copy, not a standalone FDS-101 Button instance */
+  font-size: var(--tpl-font-size-sm);
+  color: var(--tpl-color-text-primary);
+}
+
+.tpl-list-row-actions__menu button:hover:not(:disabled) {
+  background: var(--tpl-color-hover-bg);
+}
+
+.tpl-list-row-actions__menu button[data-destructive="true"] {
+  color: var(--tpl-color-destructive);
+}
+
+.tpl-list-row-actions__menu button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Pagination ---- */
+
+/* Right-aligned per the Leads reference: the pager cluster ("X–Y of Z" + prev/
+ * current/next) sits at the right edge of its own row; there is no left-side
+ * "Rows per page" control here — Section 26 keeps that an unimplemented, absent
+ * extension point rather than a fabricated dropdown. */
+.tpl-list__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--tpl-space-2);
+  padding: var(--tpl-space-3) var(--tpl-space-4);
+  /* OBSERVED — the real Leads pagination container (node 3580:49576) uses the
+   * stronger `border-default` for its top divider, not `border-light` like the
+   * toolbar's — kept as its own distinct weight, not collapsed to match. */
+  border-top: var(--tpl-border-width) solid var(--tpl-color-border);
+  font-size: var(--tpl-font-size-xs);
+  font-family: var(--tpl-font-family-body);
+  color: var(--tpl-color-text-secondary);
+}
+
+.tpl-list__pagination-summary {
+  margin-right: var(--tpl-space-2);
+}
+
+.tpl-list__pagination button {
+  height: var(--tpl-control-height-xs);
+  width: var(--tpl-control-height-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: var(--tpl-border-width) solid var(--tpl-color-action-secondary-border);
+  border-radius: var(--tpl-radius-default);
+  background: var(--tpl-color-bg-surface);
+  cursor: pointer;
+  font-family: var(--tpl-font-family-body); /* Lexend — real FDS-101 Button component, not Sora */
+  font-size: var(--tpl-font-size-sm);
+  line-height: 1;
+}
+
+.tpl-list__pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tpl-list__pagination-current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tpl-pagination-current-size);
+  height: var(--tpl-pagination-current-size);
+  padding: 0 var(--tpl-space-1);
+  border-radius: var(--tpl-radius-default);
+  background: var(--tpl-color-action-primary-bg);
+  color: var(--tpl-color-action-primary-text);
+  font-weight: var(--tpl-font-weight-semibold);
+}
+
+/* ---- States (loading / empty / error) ----
+ * No longer its own bordered/rounded box — it renders inside
+ * `.tpl-list__collection`, which already owns the outer border/radius/shadow.
+ * ASSUMED (ASSUMED, not observed): the real Leads reference shows only a
+ * success-state table, so this states-inside-one-card treatment is this pilot's
+ * own consistent extension of that confirmed evidence, not itself evidenced. */
+
+.tpl-list__status {
+  padding: var(--tpl-space-6) var(--tpl-space-3);
+  text-align: center;
+  color: var(--tpl-color-text-secondary);
+}
+
+.tpl-list__status p {
+  margin: 0 0 var(--tpl-space-1);
+}
+
+.tpl-list__status--error {
+  color: var(--tpl-color-error);
+}
+
+@media (max-width: 640px) {
+  .tpl-list__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--tpl-space-2);
+  }
+}

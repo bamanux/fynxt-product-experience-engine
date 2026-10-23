@@ -1,0 +1,15 @@
+{
+  "name": "fdi",
+  "version": "0.1.0",
+  "description": "FDI \u2014 FYNXT Design Inspector. Turns PRDs/FRDs/wireframes into reviewed Design Case Files, Figma designs from FDS-101, and Station code, with human approval gates. Start with /fdi-setup.",
+  "author": {
+    "name": "FYNXT Product Design"
+  },
+  "keywords": [
+    "fynxt",
+    "design",
+    "figma",
+    "design-system",
+    "fds-101"
+  ]
+}

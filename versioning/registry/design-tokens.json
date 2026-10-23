@@ -1,0 +1,19 @@
+{
+  "artifact": "design-system/tokens/tokens.json",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-07",
+      "status": "DRAFT",
+      "breaking": false,
+      "summary": "Initial extraction of 80 tokens from FDS-101 bound variables. Awaiting Product Designer approval (EXTRACTION-2026-10-07.md)."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-12",
+      "status": "DRAFT",
+      "breaking": true,
+      "summary": "Full import of FDS-101 (9 collections, Light/Dark, 5 form factors, 9 icon tones, 19 text styles, 6 effect styles) with aliases. Breaking vs 0.1.0: component.adaptive-form.* moved to font.*/control.*/field.*/card.*; UNVERIFIED tokens from another library removed. No consumers yet."
+    }
+  ]
+}

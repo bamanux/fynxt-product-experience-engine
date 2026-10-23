@@ -1,0 +1,16 @@
+{
+  "name": "fynxt",
+  "owner": {
+    "name": "FYNXT Product Design"
+  },
+  "metadata": {
+    "description": "FYNXT's internal Claude Code plugins."
+  },
+  "plugins": [
+    {
+      "name": "fdi",
+      "source": "./fdi",
+      "description": "FDI — FYNXT Design Inspector. Design Case Files, Figma from FDS-101 and Station code, with human approval gates."
+    }
+  ]
+}

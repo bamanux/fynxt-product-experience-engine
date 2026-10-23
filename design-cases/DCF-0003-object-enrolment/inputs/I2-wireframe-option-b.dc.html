@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Option B: One rule builder</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#13296B}a:hover{color:#0B1A45}
+</style>
+</helmet>
+<div style="background: #F6F7F9; font-family: 'Poppins', 'Helvetica Neue', sans-serif; color: #1C2430; padding: 40px 24px; box-sizing: border-box; min-height: 1500px">
+<div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 13px; color: #59636F">Incentive Program › Participants &amp; eligibility</div>
+<h1 style="margin: 0; font-size: 24px; font-weight: 600">Create Incentive Program</h1>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DDE2E8; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 28px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px"><span style="background: #E8EDF8; color: #13296B; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px">STEP 1</span><span style="font-size: 16px; font-weight: 600">Participant type</span></div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<label style="display: flex; align-items: center; gap: 10px; border: 1px solid #DDE2E8; border-radius: 10px; padding: 12px 16px; min-width: 200px; font-size: 14px"><input type="radio" name="ptypeB" checked="checked"> Client</label>
+<label style="display: flex; align-items: center; gap: 10px; border: 1px solid #DDE2E8; border-radius: 10px; padding: 12px 16px; min-width: 200px; font-size: 14px"><input type="radio" name="ptypeB"> IB</label>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; gap: 10px"><span style="background: #E8EDF8; color: #13296B; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px">STEP 2</span><span style="font-size: 16px; font-weight: 600">Enrollment Criteria <span style="color: #C2332A">*</span></span></div>
+<div style="font-size: 14px; color: #59636F">Define enrollment criteria for participants. All criteria are evaluated once at enrollment.</div>
+
+<div style="border: 1px solid #DDE2E8; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap"><div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 8px; font-size: 15px; flex-wrap: wrap"><span>Participants must match</span><div style="position: relative; display: inline-block"><button type="button" onClick="{{topMode.toggle}}" style="display: flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600; color: #13296B; background: #FFFFFF; border: 1px solid #13296B; border-radius: 8px; padding: 8px 12px; min-height: 40px">{{topMode.display}} <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button><sc-if value="{{topMode.isOpen}}" hint-placeholder-val="{{false}}"><div style="position: absolute; top: 100%; left: 0; margin-top: 4px; z-index: 40; width: 300px; background: #FFFFFF; border: 1px solid #DDE2E8; border-radius: 10px; box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14); padding: 4px"><sc-for list="{{topMode.options}}" as="o" hint-placeholder-count="2"><button type="button" onClick="{{o.pick}}" style="display: block; width: 100%; text-align: left; padding: 10px 12px; border: none; border-radius: 6px; background: {{o.bg}}; font: inherit; font-size: 14px; color: #1C2430"><span style="font-weight: 600">{{o.label}}</span> <span style="color: #59636F">{{o.hint}}</span></button></sc-for></div></sc-if></div><span>of the conditions below</span></div><div style="font-size: 12px; color: #59636F">This sets how the rules and groups below combine. Each group has its own setting for the rules inside it.</div></div><button type="button" onClick="{{clearAll}}" style="border: none; background: none; color: #13296B; font: inherit; font-size: 14px; font-weight: 500; padding: 8px 4px; min-height: 40px; text-decoration: underline; font-size: 13px">Clear all</button></div>
+<div style="display: flex; flex-direction: column; gap: 14px"><sc-for list="{{items}}" as="it" hint-placeholder-count="3"><sc-if value="{{it.showDivider}}" hint-placeholder-val="{{false}}"><div style="display: flex; align-items: center; gap: 12px; padding-left: 62px; padding-right: 54px"><div style="flex: 1; height: 1px; background: #DDE2E8"></div><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #13296B; background: #E8EDF8; border-radius: 999px; padding: 4px 14px">{{it.divider}}</span><div style="flex: 1; height: 1px; background: #DDE2E8"></div></div></sc-if><sc-if value="{{it.isRule}}" hint-placeholder-val="{{true}}"><div style="display: flex; align-items: flex-end; gap: 10px"><div style="width: 52px; flex: none; font-size: 13px; color: #59636F; padding-bottom: 12px; text-align: right">{{it.join}}</div><div style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px"><sc-for list="{{it.controls}}" as="c" hint-placeholder-count="4"><div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; position: relative"><span style="font-size: 11px; color: #59636F">{{c.label}}</span><sc-if value="{{c.isInput}}" hint-placeholder-val="{{false}}"><input type="{{c.inputType}}" value="{{c.value}}" onChange="{{c.onInput}}" aria-label="{{c.label}}" style="font: inherit; font-size: 14px; padding: 9px 12px; border: 1px solid #DDE2E8; border-radius: 8px; color: #1C2430; min-height: 44px; box-sizing: border-box; width: 100%"></sc-if><sc-if value="{{c.isMenu}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{c.toggle}}" aria-label="{{c.label}}" style="display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; min-height: 44px; font: inherit; font-size: 14px; color: #1C2430; background: #FFFFFF; border: 1px solid {{c.border}}; border-radius: 8px; padding: 9px 12px; text-align: left"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{c.display}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button><sc-if value="{{c.isOpen}}" hint-placeholder-val="{{false}}"><div style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; z-index: 40; background: #FFFFFF; border: 1px solid #DDE2E8; border-radius: 10px; box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14); padding: 4px; max-height: 240px; overflow-y: auto"><sc-for list="{{c.options}}" as="o" hint-placeholder-count="3"><button type="button" onClick="{{o.pick}}" style="display: block; width: 100%; text-align: left; padding: 9px 10px; border: none; border-radius: 6px; background: {{o.bg}}; font: inherit; font-size: 14px; font-weight: {{o.weight}}; color: #1C2430">{{o.label}}</button></sc-for></div></sc-if></sc-if></div></sc-for></div><button type="button" aria-label="Delete rule" onClick="{{it.remove}}" style="width: 44px; height: 44px; flex: none; border: 1px solid #F1D3D1; background: #FFFFFF; color: #C2332A; border-radius: 8px; font: inherit"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M6 6l1 14h10l1-14"></path></svg></button></div></sc-if><sc-if value="{{it.isGroup}}" hint-placeholder-val="{{false}}"><div style="display: flex; align-items: flex-start; gap: 10px"><div style="width: 52px; flex: none; font-size: 13px; color: #59636F; padding-top: 14px; text-align: right">{{it.join}}</div><div style="flex: 1; min-width: 0; background: #F5F7FB; border: 1px solid #C9D2E0; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px"><div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap"><div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #3D4652"><span style="font-weight: 600; color: #13296B">{{it.title}}</span><span>· Match</span><div style="position: relative; display: inline-block"><button type="button" onClick="{{it.modeCtl.toggle}}" style="display: flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600; color: #13296B; background: #FFFFFF; border: 1px solid #13296B; border-radius: 8px; padding: 8px 12px; min-height: 40px">{{it.modeCtl.display}} <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button><sc-if value="{{it.modeCtl.isOpen}}" hint-placeholder-val="{{false}}"><div style="position: absolute; top: 100%; left: 0; margin-top: 4px; z-index: 40; width: 300px; background: #FFFFFF; border: 1px solid #DDE2E8; border-radius: 10px; box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14); padding: 4px"><sc-for list="{{it.modeCtl.options}}" as="o" hint-placeholder-count="2"><button type="button" onClick="{{o.pick}}" style="display: block; width: 100%; text-align: left; padding: 10px 12px; border: none; border-radius: 6px; background: {{o.bg}}; font: inherit; font-size: 14px; color: #1C2430"><span style="font-weight: 600">{{o.label}}</span> <span style="color: #59636F">{{o.hint}}</span></button></sc-for></div></sc-if></div><span>of the rules in this group</span></div><button type="button" onClick="{{it.removeGroup}}" style="border: 1px solid #F1D3D1; background: #FFFFFF; color: #C2332A; border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 13px; min-height: 40px">Delete group</button></div><sc-for list="{{it.rules}}" as="r" hint-placeholder-count="2"><div style="display: flex; align-items: flex-end; gap: 10px"><div style="width: 52px; flex: none; font-size: 13px; color: #59636F; padding-bottom: 12px; text-align: right">{{r.join}}</div><div style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px"><sc-for list="{{r.controls}}" as="c" hint-placeholder-count="4"><div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; position: relative"><span style="font-size: 11px; color: #59636F">{{c.label}}</span><sc-if value="{{c.isInput}}" hint-placeholder-val="{{false}}"><input type="{{c.inputType}}" value="{{c.value}}" onChange="{{c.onInput}}" aria-label="{{c.label}}" style="font: inherit; font-size: 14px; padding: 9px 12px; border: 1px solid #DDE2E8; border-radius: 8px; color: #1C2430; min-height: 44px; box-sizing: border-box; width: 100%"></sc-if><sc-if value="{{c.isMenu}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{c.toggle}}" aria-label="{{c.label}}" style="display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; min-height: 44px; font: inherit; font-size: 14px; color: #1C2430; background: #FFFFFF; border: 1px solid {{c.border}}; border-radius: 8px; padding: 9px 12px; text-align: left"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{c.display}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button><sc-if value="{{c.isOpen}}" hint-placeholder-val="{{false}}"><div style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; z-index: 40; background: #FFFFFF; border: 1px solid #DDE2E8; border-radius: 10px; box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14); padding: 4px; max-height: 240px; overflow-y: auto"><sc-for list="{{c.options}}" as="o" hint-placeholder-count="3"><button type="button" onClick="{{o.pick}}" style="display: block; width: 100%; text-align: left; padding: 9px 10px; border: none; border-radius: 6px; background: {{o.bg}}; font: inherit; font-size: 14px; font-weight: {{o.weight}}; color: #1C2430">{{o.label}}</button></sc-for></div></sc-if></sc-if></div></sc-for></div><button type="button" aria-label="Delete rule" onClick="{{r.remove}}" style="width: 44px; height: 44px; flex: none; border: 1px solid #F1D3D1; background: #FFFFFF; color: #C2332A; border-radius: 8px; font: inherit"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M6 6l1 14h10l1-14"></path></svg></button></div></sc-for><div style="padding-left: 62px"><button type="button" onClick="{{it.addRule}}" style="border: none; background: none; color: #13296B; font: inherit; font-size: 14px; font-weight: 500; padding: 8px 4px; min-height: 40px">+ Add rule to group</button></div></div></div></sc-if></sc-for></div>
+<div style="display: flex; gap: 20px; padding-left: 62px"><button type="button" onClick="{{addRule}}" style="border: none; background: none; color: #13296B; font: inherit; font-size: 14px; font-weight: 500; padding: 8px 4px; min-height: 40px">+ Add rule</button><button type="button" onClick="{{addGroup}}" style="border: none; background: none; color: #13296B; font: inherit; font-size: 14px; font-weight: 500; padding: 8px 4px; min-height: 40px">+ Add group</button></div>
+<div style="background: #F6F7F9; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #3D4652; line-height: 1.6"><span style="font-weight: 600; color: #1C2430">Reads as:</span> {{summary}}</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 1px solid #DDE2E8; border-radius: 12px; padding: 16px 20px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 14px; font-weight: 600">Manual Enrollment</div>
+<div style="font-size: 13px; color: #59636F">Also enrol named participants, whatever the rules above</div>
+</div>
+<button type="button" style="border: 1px solid #13296B; color: #13296B; background: #FFFFFF; border-radius: 8px; padding: 10px 14px; font: inherit; font-size: 13px; font-weight: 500">+ Add participants</button>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid #EEF0F3; padding-top: 22px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: center; gap: 10px"><span style="background: #E8EDF8; color: #13296B; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px">STEP 3</span><span style="font-size: 16px; font-weight: 600">Participant Blocking</span></div>
+<div style="font-size: 14px; color: #59636F">Define participants to be excluded from this program</div>
+</div>
+<button type="button" style="border: 1px dashed #C2332A; color: #C2332A; background: #FFFFFF; border-radius: 8px; padding: 10px 16px; font: inherit; font-size: 14px; font-weight: 500">+ Add Blocked Participant</button>
+</div>
+
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<button type="button" style="background: none; border: none; font: inherit; font-size: 14px; font-weight: 500; color: #1C2430; padding: 12px 8px">Back</button>
+<div style="display: flex; gap: 12px">
+<button type="button" style="background: none; border: none; font: inherit; font-size: 14px; font-weight: 500; color: #1C2430; padding: 12px 16px">Save as Draft</button>
+<button type="button" style="background: #13296B; color: #FFFFFF; border: none; border-radius: 8px; font: inherit; font-size: 14px; font-weight: 600; padding: 12px 28px">Next</button>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.FIELDS = {
+      'Account': [
+        { name: 'Country', type: 'list', values: ['United Kingdom', 'Germany', 'India', 'UAE'] },
+        { name: 'Account Type', type: 'list', values: ['Standard', 'VIP', 'ECN'] },
+        { name: 'Account Status', type: 'list', values: ['Active', 'Inactive', 'Pending'] },
+        { name: 'Created on', type: 'date' }
+      ],
+      'Contact': [
+        { name: 'Country', type: 'list', values: ['United Kingdom', 'Germany', 'India', 'UAE'] },
+        { name: 'KYC Status', type: 'list', values: ['Approved', 'Pending', 'Rejected'] },
+        { name: 'Created on', type: 'date' }
+      ],
+      'Trading Account': [
+        { name: 'Balance', type: 'number' },
+        { name: 'Leverage', type: 'number' },
+        { name: 'Platform', type: 'list', values: ['MT4', 'MT5', 'cTrader'] }
+      ]
+    };
+    this.CONDS = {
+      list: ['is', 'is not'],
+      number: ['is equal to', 'is greater than', 'is less than'],
+      date: ['is before', 'is after', 'is on']
+    };
+    this.state = {
+      mode: 'all', open: null, nextId: 6,
+      items: [
+        { id: 1, type: 'rule', obj: 'Account', field: 'Country', cond: 'is', val: 'United Kingdom' },
+        { id: 2, type: 'rule', obj: 'Account', field: 'Account Status', cond: 'is', val: 'Active' },
+        { id: 3, type: 'group', mode: 'any', rules: [
+          { id: 4, obj: 'Account', field: 'Account Type', cond: 'is', val: 'VIP' },
+          { id: 5, obj: 'Trading Account', field: 'Balance', cond: 'is greater than', val: '1000' }
+        ] }
+      ]
+    };
+  }
+  fieldDef(obj, name) {
+    const list = this.FIELDS[obj] || [];
+    return list.find((f) => f.name === name) || list[0];
+  }
+  fresh(obj, f) {
+    return { cond: this.CONDS[f.type][0], val: f.values ? f.values[0] : '' };
+  }
+  blankRule(id) {
+    const f = this.FIELDS['Account'][0];
+    return Object.assign({ id: id, obj: 'Account', field: f.name }, this.fresh('Account', f));
+  }
+  patchRule(id, patch) {
+    const fix = (r) => {
+      if (r.id !== id) return r;
+      let n = Object.assign({}, r, patch);
+      if (patch.obj) { const f = this.FIELDS[n.obj][0]; n.field = f.name; n = Object.assign(n, this.fresh(n.obj, f)); }
+      else if (patch.field) { n = Object.assign(n, this.fresh(n.obj, this.fieldDef(n.obj, n.field))); }
+      return n;
+    };
+    const items = this.state.items.map((it) => it.type === 'group' ? Object.assign({}, it, { rules: it.rules.map(fix) }) : fix(it));
+    this.setState({ items: items, open: null });
+  }
+  removeRule(id) {
+    const items = this.state.items
+      .filter((it) => it.id !== id)
+      .map((it) => it.type === 'group' ? Object.assign({}, it, { rules: it.rules.filter((r) => r.id !== id) }) : it)
+      .filter((it) => it.type !== 'group' || it.rules.length > 0);
+    this.setState({ items: items, open: null });
+  }
+  toggle(key) { this.setState({ open: this.state.open === key ? null : key }); }
+  menu(key, label, display, opts, onPick) {
+    const open = this.state.open === key;
+    return {
+      label: label, isMenu: true, isInput: false, display: display, isOpen: open,
+      border: open ? '#13296B' : '#DDE2E8',
+      toggle: () => this.toggle(key),
+      options: opts.map((o) => ({ label: o, bg: o === display ? '#E8EDF8' : '#FFFFFF', weight: o === display ? '600' : '400', pick: () => onPick(o) }))
+    };
+  }
+  controlsFor(r) {
+    const f = this.fieldDef(r.obj, r.field);
+    const k = 'r' + r.id;
+    const out = [
+      this.menu(k + 'o', 'Object', r.obj, Object.keys(this.FIELDS), (o) => this.patchRule(r.id, { obj: o })),
+      this.menu(k + 'f', 'Field', r.field, this.FIELDS[r.obj].map((x) => x.name), (o) => this.patchRule(r.id, { field: o })),
+      this.menu(k + 'c', 'Condition', r.cond, this.CONDS[f.type], (o) => this.patchRule(r.id, { cond: o }))
+    ];
+    if (f.values) out.push(this.menu(k + 'v', 'Value', r.val, f.values, (o) => this.patchRule(r.id, { val: o })));
+    else out.push({ label: 'Value', isMenu: false, isInput: true, inputType: f.type === 'date' ? 'date' : 'number', value: r.val, onInput: (e) => this.patchRule(r.id, { val: e.target.value }) });
+    return out;
+  }
+  modeCtl(key, mode, onPick, scope) {
+    const open = this.state.open === key;
+    return {
+      display: mode === 'all' ? 'All' : 'Any', isOpen: open, toggle: () => this.toggle(key),
+      options: [
+        { label: 'All', hint: scope === 'top' ? 'every condition below must be true' : 'every rule in this group must be true', bg: mode === 'all' ? '#E8EDF8' : '#FFFFFF', pick: () => onPick('all') },
+        { label: 'Any', hint: scope === 'top' ? 'at least one condition below is true' : 'at least one rule in this group is true', bg: mode === 'any' ? '#E8EDF8' : '#FFFFFF', pick: () => onPick('any') }
+      ]
+    };
+  }
+  renderVals() {
+    const st = this.state;
+    const joinOf = (m) => m === 'all' ? 'and' : 'or';
+    const txt = (r) => r.obj + ' › ' + r.field + ' ' + r.cond + ' ' + (r.val || '…');
+    const summary = st.items.map((it) => it.type === 'group'
+      ? '( ' + it.rules.map(txt).join(it.mode === 'all' ? ' AND ' : ' OR ') + ' )'
+      : txt(it)).join(st.mode === 'all' ? ' AND ' : ' OR ');
+    let groupNo = 0;
+    const items = st.items.map((it, i) => {
+      const join = '';
+      const showDivider = i > 0;
+      const divider = st.mode === 'all' ? 'AND' : 'OR';
+      if (it.type !== 'group') {
+        return { isRule: true, isGroup: false, join: join, showDivider: showDivider, divider: divider, controls: this.controlsFor(it), remove: () => this.removeRule(it.id) };
+      }
+      return {
+        isRule: false, isGroup: true, join: join, showDivider: showDivider, divider: divider, title: 'Group ' + (++groupNo),
+        modeCtl: this.modeCtl('g' + it.id, it.mode, (m) => this.setState({ open: null, items: st.items.map((g) => g.id === it.id ? Object.assign({}, g, { mode: m }) : g) }), 'group'),
+        rules: it.rules.map((r, j) => ({ join: j === 0 ? 'Where' : joinOf(it.mode), controls: this.controlsFor(r), remove: () => this.removeRule(r.id) })),
+        addRule: () => this.setState({ nextId: st.nextId + 1, open: null, items: st.items.map((g) => g.id === it.id ? Object.assign({}, g, { rules: g.rules.concat([this.blankRule(st.nextId)]) }) : g) }),
+        removeGroup: () => this.setState({ open: null, items: st.items.filter((g) => g.id !== it.id) })
+      };
+    });
+    return {
+      topMode: this.modeCtl('top', st.mode, (m) => this.setState({ mode: m, open: null }), 'top'),
+      items: items,
+      summary: summary || 'No rules yet',
+      addRule: () => this.setState({ nextId: st.nextId + 1, open: null, items: st.items.concat([Object.assign({ type: 'rule' }, this.blankRule(st.nextId))]) }),
+      addGroup: () => this.setState({ nextId: st.nextId + 2, open: null, items: st.items.concat([{ id: st.nextId, type: 'group', mode: 'any', rules: [this.blankRule(st.nextId + 1)] }]) }),
+      clearAll: () => this.setState({ nextId: st.nextId + 1, open: null, mode: 'all', items: [Object.assign({ type: 'rule' }, this.blankRule(st.nextId))] })
+    };
+  }
+}
+</script>
+</body>
+</html>
