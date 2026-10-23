@@ -13,6 +13,9 @@ Release: sync → bump `version` in `.claude-plugin/plugin.json` → publish to 
 
 ## For colleagues
 
-1. In Claude Code, install **FDI** from the FYNXT plugin library (`/plugin`, or the plugin list in the Claude app).
+1. In Claude Code, install **FDI** from the FYNXT plugin library (`/plugin`, or the plugin list in the Claude app),
+   or straight from GitHub (the engine repo's root `.claude-plugin/marketplace.json`):
+   `claude plugin marketplace add bamanux/fynxt-product-experience-engine`, then
+   `claude plugin install fdi@fynxt`.
 2. Run **`/fdi-setup`**. It signs you in to GitHub if needed, downloads the FYNXT repos, and checks Figma and login.
 3. Open `~/fynxt/fynxt-product-experience-engine`, then `/fdi-intake <title> -- <requirement>`.

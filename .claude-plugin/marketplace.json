@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "fdi",
-      "source": "./fdi",
+      "source": "./plugins/fdi",
       "description": "FDI — FYNXT Design Inspector. Design Case Files, Figma from FDS-101 and Station code, with human approval gates."
     }
   ]
